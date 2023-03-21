@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // N:M CON PROJECTS -> User_Favorites
+      // N:M CON PROJECTS -> User_Investing
     }
   }
   User.init({
