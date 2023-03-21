@@ -1,30 +1,25 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-// const db = require('./src/models')
+const express = require('express');
+const bodyParser = require('body-parser');
 // const userRouter = require('./src/routes/users.js')
 // const authRoutes = require('./src/routes/auth')
-// const { ensureAuthentication } = require('./src/middelware/auth')
-const dotenv = require('dotenv')
-const cors = require('cors')
+// const { ensureAuthentication } = require('./src/middleware/auth')
+const dotenv = require('dotenv');
+const cors = require('cors');
+const app = express();
+const port = process.env.port;
 
-dotenv.config()
 
 const startApp = async () => {
-  const app = express()
-  app.use(cors())
-  const port = process.env.port
+  dotenv.config();
+  app.use(cors());
+  
 
   app.use(bodyParser.json())
   app.use(
     bodyParser.urlencoded({
       extended: true,
     })
-  )
-
-  // app.use(ensureAuthentication)
-  app.get('/', (request, response) => {
-    response.json('Aquí estamos')
-  })
+  );
 
   // app.use('/auth', authRoutes)
   // app.use('/users', userRouter)
@@ -33,11 +28,11 @@ const startApp = async () => {
 
   try {
     app.listen(port, () => {
-      console.log('APP running on port ' + port)
+      console.log('APP running on port ' + port);
     })
   } catch (error) {
-    console.log(error)
-    process.exit(error.message)
+    console.log(error);
+    process.exit(1);
   }
 }
 
