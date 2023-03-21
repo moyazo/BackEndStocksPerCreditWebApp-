@@ -14,17 +14,65 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   projects.init({
-    name: DataTypes.STRING,
-    image: DataTypes.STRING,
-    goal: DataTypes.STRING,
-    min_invest: DataTypes.INTEGER,
-    action_per_credit: DataTypes.STRING,
-    currency: DataTypes.STRING,
-    duration: DataTypes.INTEGER,
-    history: DataTypes.STRING,
-    proposal: DataTypes.STRING,
-    cost: DataTypes.INTEGER,
-    comerce: DataTypes.STRING
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    goal: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    min_invest: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    action_per_credit: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    currency: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    duration: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    history: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    proposal: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    cost: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    comerce: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    }
   }, {
     sequelize,
     modelName: 'projects',
