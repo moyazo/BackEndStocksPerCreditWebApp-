@@ -8,7 +8,9 @@ module.exports = {
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
       },
       name: {
         type: Sequelize.STRING,

@@ -28,7 +28,9 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true
+      autoIncrement: true,
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE"
     },
     name: {
       type: DataTypes.STRING,
