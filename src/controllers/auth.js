@@ -5,7 +5,16 @@ const jsonwebtoken = require('jsonwebtoken')
 const { getUserByEmail } = require('./users')
 const saltRounds = 10
 
-const signup = async ({ email, password }) => {
+const signup = async ({
+  name,
+  avatar,
+  email,
+  password,
+  country,
+  telf,
+  last_name,
+  user_type
+}) => {
   const existedUser = await getUserByEmail(email)
 
   if (existedUser) {
@@ -13,7 +22,17 @@ const signup = async ({ email, password }) => {
   }
   const salt = await bcrypt.genSalt(saltRounds)
   const hashedPassword = await bcrypt.hash(password, salt)
-  const user = await User.create({ email, password: hashedPassword, salt })
+  const newData = {
+    name,
+    avatar,
+    email,
+    hashedPassword,
+    country,
+    telf,
+    last_name,
+    user_type
+  }
+  const user = await User.create({ ...newData, salt })
 
   return jsonwebtoken.sign({ email: user.email }, process.env.TOKEN_SECRET)
 }

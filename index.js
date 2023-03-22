@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 // const userRouter = require('./src/routes/users.js')
-// const authRoutes = require('./src/routes/auth')
+const authRoutes = require('./src/routes/auth')
 // const { ensureAuthentication } = require('./src/middleware/auth')
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -20,7 +20,7 @@ const startApp = async () => {
     })
   );
 
-  // app.use('/auth', authRoutes)
+  app.use('/auth', authRoutes)
   // app.use('/users', userRouter)
   // app.use('/investor', Characters)
   // app.use('/entrepreneur', Students)

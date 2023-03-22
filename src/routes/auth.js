@@ -7,7 +7,7 @@ router.post('/signup', async (request, response) => {
     if (!email || !password) {
       response.status(502).json('Incorrect data')
     }
-    const token = await signup({ email, password })
+    const token = await signup(request.body)
     response.status(200).json(token)
   } catch (error) {
     response.status(500).json(error.message)
