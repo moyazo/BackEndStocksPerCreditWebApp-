@@ -10,8 +10,16 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // N:M CON PROJECTS -> User_Favorites
-      // N:M CON PROJECTS -> User_Investing
+      User.belongsToMany(models.Project,{
+        through: 'User_Favorites_Projects',
+        as: 'favoriteProjects',
+        foreignKey: 'user_id'
+      })
+      User.belongsToMany(models.Project,{
+        through: 'User_Investing_Projects',
+        as: 'investingProjects',
+        foreignKey: 'user_id'
+      })
     }
   }
   User.init({
