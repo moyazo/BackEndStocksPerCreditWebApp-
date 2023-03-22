@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       last_name: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       user_type: {

@@ -36,7 +36,7 @@ module.exports = {
         allowNull: false
       },
       last_name: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false
       },
       user_type: {

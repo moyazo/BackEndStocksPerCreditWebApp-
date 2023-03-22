@@ -26,14 +26,13 @@ const signup = async ({
     name,
     avatar,
     email,
-    hashedPassword,
+    password: hashedPassword,
     country,
     telf,
     last_name,
     user_type
   }
   const user = await User.create({ ...newData, salt })
-
   return jsonwebtoken.sign({ email: user.email }, process.env.TOKEN_SECRET)
 }
 
