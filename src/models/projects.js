@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'project_id',
       })
       Project.belongsToMany(models.Tag, {
-        through: 'Project_Tag',
+        through: 'Project_Tags',
         as: 'ProjectTag',
         foreignKey: 'project_id',
       })
