@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Tag extends Model {
     /**
@@ -20,34 +18,35 @@ module.exports = (sequelize, DataTypes) => {
         as: 'TagProject',
         foreignKey: 'tag_id',
       })
-      
     }
   }
-  Tag.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true,
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE"
+  Tag.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE
+    {
+      sequelize,
+      modelName: 'Tag',
     }
-  }, {
-    sequelize,
-    modelName: 'Tag',
-  });
-  return Tag;
-};
+  )
+  return Tag
+}
