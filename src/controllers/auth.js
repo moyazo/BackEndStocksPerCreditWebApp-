@@ -5,6 +5,12 @@ const jsonwebtoken = require('jsonwebtoken')
 const { getUserByEmail } = require('./users')
 const saltRounds = 10
 
+/**
+ * *signup*
+ * *This function receive some values from a specific end-point at /routes/auth to save a user in our DB*
+ * @param {Object}
+ * @returns {String}
+ */
 const signup = async ({
   name,
   avatar,
@@ -35,7 +41,12 @@ const signup = async ({
   const user = await User.create({ ...newData, salt })
   return jsonwebtoken.sign({ email: user.email }, process.env.TOKEN_SECRET)
 }
-
+/**
+ * *login*
+ * *This function receive some values from a specific end-point at /routes/auth to search a user in our DB for log in at our app*
+ * @param {Object}
+ * @returns {String}
+ */
 const login = async ({ email, password }) => {
   const user = await getUserByEmail(email)
 
