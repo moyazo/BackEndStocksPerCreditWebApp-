@@ -40,7 +40,7 @@ module.exports = {
         allowNull: false
       },
       history: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false
       },
       proposal: {

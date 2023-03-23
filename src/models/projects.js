@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       history: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       proposal: {
