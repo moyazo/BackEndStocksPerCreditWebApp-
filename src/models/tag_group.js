@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
       Tag_Group.belongsToMany(models.Tag, {
         through: 'Tag_Tag_Group',
         as: 'GroupTag',
-        foreignKey: 'groupTag_id',
+        foreignKey: 'groupTagId',
       })
       Tag_Group.belongsToMany(models.User, {
         through: 'Investor_Tag_Group',
         as: 'GroupTagInvestor',
-        foreignKey: 'groupTag_id',
+        foreignKey: 'groupTagId',
       })
     }
   }

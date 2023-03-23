@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class ProjectTag extends Model {
+  class Project_Tag extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,14 +13,14 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  ProjectTag.init({
+  Project_Tag.init({
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
     },
-    tag_id: {
+    tagId: {
       allowNull: false,
       type: DataTypes.UUID,
       references: {
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     },
-    project_id: {
+    projectId: {
         allowNull: false,
         type: DataTypes.UUID,
         references: {
@@ -52,5 +52,5 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'ProjectTag',
   });
-  return ProjectTag;
+  return Project_Tag;
 };

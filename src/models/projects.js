@@ -11,17 +11,17 @@ module.exports = (sequelize, DataTypes) => {
       Project.belongsToMany(models.User, {
         through: 'User_Favorites_Projects',
         as: 'favoriteProjects',
-        foreignKey: 'project_id',
+        foreignKey: 'projectId',
       })
       Project.belongsToMany(models.User, {
         through: 'User_Investing_Projects',
         as: 'investingProjects',
-        foreignKey: 'project_id',
+        foreignKey: 'projectId',
       })
       Project.belongsToMany(models.Tag, {
         through: 'Project_Tags',
         as: 'ProjectTag',
-        foreignKey: 'project_id',
+        foreignKey: 'projectId',
       })
     }
   }
@@ -47,11 +47,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      min_invest: {
+      minInvest: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      action_per_credit: {
+      actionPerCredit: {
         type: DataTypes.STRING,
         allowNull: false,
       },

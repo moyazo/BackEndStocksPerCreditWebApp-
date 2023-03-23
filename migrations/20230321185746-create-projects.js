@@ -23,11 +23,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      min_invest: {
+      minInvest: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      action_per_credit: {
+      actionPerCredit: {
         type: Sequelize.STRING,
         allowNull: false
       },

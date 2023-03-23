@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class UserFavoritesProjects extends Model {
+  class User_Favorites_Projects extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,14 +13,14 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  UserFavoritesProjects.init({
+  User_Favorites_Projects.init({
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
     },
-    user_id: {
+    userId: {
       allowNull: false,
       type: DataTypes.UUID,
       references: {
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     },
-    project_id: {
+    projectId: {
         allowNull: false,
         type: DataTypes.UUID,
         references: {
@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'UserFavoritesProjects',
+    modelName: 'User_Favorites_Projects',
   });
-  return UserFavoritesProjects;
+  return User_Favorites_Projects;
 };

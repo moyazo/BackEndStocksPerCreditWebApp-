@@ -2,14 +2,14 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('InvestorTagGroups', {
+    await queryInterface.createTable('Investor_Tag_Groups', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true,
       },
-      user_id: {
+      userId: {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
@@ -19,7 +19,7 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
       },
-      groupTag_id: {
+      groupTagId: {
           allowNull: false,
           type: Sequelize.UUID,
           references: {
@@ -40,6 +40,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('InvestorTagGroups');
+    await queryInterface.dropTable('Investor_Tag_Groups');
   }
 };

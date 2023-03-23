@@ -35,11 +35,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      last_name: {
+      lastName: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      user_type: {
+      userRol: {
         type: Sequelize.STRING,
         allowNull: false
       },

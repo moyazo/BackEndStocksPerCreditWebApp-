@@ -11,17 +11,17 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsToMany(models.Project, {
         through: 'User_Favorites_Projects',
         as: 'favoriteProjects',
-        foreignKey: 'user_id',
+        foreignKey: 'userId',
       })
       User.belongsToMany(models.Project, {
         through: 'User_Investing_Projects',
         as: 'investingProjects',
-        foreignKey: 'user_id',
+        foreignKey: 'userId',
       })
       User.belongsToMany(models.Tag_Group, {
         through: 'Investor_Tag_Group',
         as: 'InvestorGroupTag',
-        foreignKey: 'user_id',
+        foreignKey: 'userId',
       })
     }
   }
@@ -59,11 +59,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      last_name: {
+      lastName: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      user_type: {
+      userRol: {
         type: DataTypes.STRING,
         allowNull: false,
       },

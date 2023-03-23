@@ -9,7 +9,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
       },
-      tag_id: {
+      tagId: {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
@@ -19,7 +19,7 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
       },
-      project_id: {
+      projectId: {
           allowNull: false,
           type: Sequelize.UUID,
           references: {

@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class InvestorTagGroup extends Model {
+  class Investor_Tag_Group extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,14 +13,14 @@ module.exports = (sequelize, DataTypes) => {
       
     }
   }
-  InvestorTagGroup.init({
+  Investor_Tag_Group.init({
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
     },
-    user_id: {
+    userId: {
       allowNull: false,
       type: DataTypes.UUID,
       references: {
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     },
-    groupTag_id: {
+    groupTagId: {
         allowNull: false,
         type: DataTypes.UUID,
         references: {
@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'InvestorTagGroup',
+    modelName: 'Investor_Tag_Group',
   });
-  return InvestorTagGroup;
+  return Investor_Tag_Group;
 };
