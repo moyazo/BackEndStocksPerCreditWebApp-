@@ -1,5 +1,6 @@
 const models = require('../models')
 
+//Hablar con front ¿que task? ?q inversion? ¿time min y max? Filtros!!
 const getProjectsList = async () => {
   const project = await models.Project.findAll()
   return project

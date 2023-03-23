@@ -1,5 +1,7 @@
 'use strict'
 const { Model } = require('sequelize')
+const { UserRole } = require('../common/constants')
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -64,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       userRol: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM(Object.keys(UserRole)),
         allowNull: false,
       },
       createdAt: {

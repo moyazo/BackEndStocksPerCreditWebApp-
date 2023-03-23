@@ -1,4 +1,8 @@
 'use strict';
+const UserRole = { 
+  INVESTOR:'INVESTOR',
+  ENTREPRENEUR: 'ENTREPRENEUR',
+}
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -40,7 +44,7 @@ module.exports = {
         allowNull: false
       },
       userRol: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM(Object.keys(UserRole)),
         allowNull: false
       },
       createdAt: {
