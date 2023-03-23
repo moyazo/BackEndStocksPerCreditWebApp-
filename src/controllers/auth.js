@@ -18,8 +18,8 @@ const signup = async ({
   password,
   country,
   telf,
-  last_name,
-  user_type
+  lastName,
+  userRol
 }) => {
   const existedUser = await getUserByEmail(email)
 
@@ -35,8 +35,8 @@ const signup = async ({
     password: hashedPassword,
     country,
     telf,
-    last_name,
-    user_type
+    lastName,
+    userRol
   }
   const user = await User.create({ ...newData, salt })
   return jsonwebtoken.sign({ email: user.email }, process.env.TOKEN_SECRET)

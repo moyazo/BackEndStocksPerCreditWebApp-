@@ -4,6 +4,7 @@ const userRoutes = require('./src/routes/users.js')
 const authRoutes = require('./src/routes/auth')
 const projectRoutes = require('./src/routes/projects')
 const tagRoutes = require('./src/routes/tags')
+const tagGroupsRoutes = require('./src/routes/tagGroups')
 const { ensureAuthentication } = require('./src/middleware/auth')
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -26,6 +27,7 @@ const startApp = async () => {
   app.use('/users', userRoutes)
   app.use('/projects', projectRoutes)
   app.use('/tags', tagRoutes)
+  app.use('/tagGroups', tagGroupsRoutes)
   // app.use('/entrepreneur', Students)
 
   try {

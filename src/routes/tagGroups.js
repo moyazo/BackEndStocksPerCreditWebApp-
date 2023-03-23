@@ -1,15 +1,14 @@
 const router = require('express').Router()
 const {
-    getTagsList,
-    getTagsById,
-    createTag,
-    updateTag,
-    removeTag,
-    toggleTagTagGroup
-} = require('../controllers/tags')
+  getTagGroupsList,
+  getTagGroupsById,
+  createTagGroup,
+  updateTagGroup,
+  removeTagGroup
+} = require('../controllers/tagGroups')
 router.get('/', async (request, response) => {
   try {
-    const project = await getTagsList()
+    const project = await getTagGroupsList()
     response.status(200).json(project)
   } catch (error) {
     response.status(500)
@@ -18,7 +17,7 @@ router.get('/', async (request, response) => {
 router.get('/:id', async (request, response) => {
   try {
     const { id } = request.params
-    const project = await getTagsById(id)
+    const project = await getTagGroupsById(id)
     response.status(200).json(project)
   } catch (error) {
     response.status(500).json(error)
@@ -28,7 +27,7 @@ router.get('/:id', async (request, response) => {
 router.post('/', async (request, response) => {
   try {
     const data = request.body
-    const project = await createTag(data)
+    const project = await createTagGroup(data)
     response.status(200).json(project)
   } catch (error) {
     response.status(500).json(error.message)
@@ -40,7 +39,7 @@ router.put('/:id', async (request, response) => {
     const { id } = request.params
     const data = request.body
     console.log({ id, data })
-    const project = await updateTag(id, data)
+    const project = await updateTagGroup(id, data)
     response.status(200).json(project)
   } catch (error) {
     response.status(500)
@@ -49,21 +48,14 @@ router.put('/:id', async (request, response) => {
 router.delete('/:id', async (request, response) => {
   try {
     const { id } = request.params
-    await removeTag(id)
+    await removeTagGroup(id)
     response.status(200).json(true)
   } catch (error) {
     response.status(500)
   }
 })
 
-router.post('/toggle-tag-group', async (request, response) => {
-  try {
-    const { tag_id, groupTag_id} = request.body
-    const project = await toggleTagTagGroup(tag_id, groupTag_id)
-    response.status(200).json(project)
-  } catch (error) {
-    response.status(500).json(error.message)
-  }
-})
+
+
 
 module.exports = router
