@@ -70,6 +70,8 @@ const latestProject = async () => {
       duration: { $gte: new Date() },
     },
   })
+  console.log(new Date())
+  console.log(project)
   return project
 }
 
@@ -111,11 +113,11 @@ const ratioSuccessProject = async () => {
    * if(total > 0 && total >= n.goal){
    *    return p + 1
    * }
-   * 
+   *
    * return p
    *
    * }, 0)/projects.length
-   * 
+   *
    * return ratio;
    */
   return {

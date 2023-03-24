@@ -20,7 +20,7 @@ module.exports = {
         allowNull: false
       },
       goal: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false
       },
       minInvest: {
@@ -36,7 +36,7 @@ module.exports = {
         allowNull: false
       },
       duration: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false
       },
       history: {

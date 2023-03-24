@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       goal: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       minInvest: {
@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       duration: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       history: {

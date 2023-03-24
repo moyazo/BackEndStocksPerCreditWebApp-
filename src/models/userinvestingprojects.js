@@ -40,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
     },
+    amount: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+  },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE
