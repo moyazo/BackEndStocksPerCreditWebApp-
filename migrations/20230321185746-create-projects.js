@@ -1,4 +1,9 @@
 'use strict';
+const currency = {
+  EUROS: 'EUROS',
+  DOLLARS: 'DOLLARS',
+  POUNDS: 'POUNDS'
+}
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -32,7 +37,7 @@ module.exports = {
         allowNull: false
       },
       currency: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM(Object.keys(currency)),
         allowNull: false
       },
       duration: {

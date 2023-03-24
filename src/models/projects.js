@@ -1,5 +1,6 @@
 'use strict'
 const { Model } = require('sequelize')
+const { currency } = require('../common/constants')
 module.exports = (sequelize, DataTypes) => {
   class Project extends Model {
     /**
@@ -56,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       currency: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM(Object.keys(currency)),
         allowNull: false,
       },
       duration: {

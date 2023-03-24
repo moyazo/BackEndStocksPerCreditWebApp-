@@ -3,4 +3,10 @@ const UserRole = {
     ENTREPRENEUR: 'ENTREPRENEUR',
 }
 
-module.exports = { UserRole }
+const currency = {
+    EUROS: 'EUROS',
+    DOLLARS: 'DOLLARS',
+    POUNDS: 'POUNDS'
+  }
+
+module.exports = { UserRole, currency }
