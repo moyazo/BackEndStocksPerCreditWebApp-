@@ -17,9 +17,9 @@ const signup = async ({
   email,
   password,
   country,
-  telf,
+  phone,
   lastName,
-  userRol
+  userRol,
 }) => {
   const existedUser = await getUserByEmail(email)
 
@@ -36,11 +36,14 @@ const signup = async ({
     country,
     phone,
     lastName,
-    userRol
+    userRol,
   }
   const user = await User.create({ ...newData, salt })
-  const token = jsonwebtoken.sign({ email: user.email }, process.env.TOKEN_SECRET)
-  return { token, role: user.userRol}
+  const token = jsonwebtoken.sign(
+    { email: user.email },
+    process.env.TOKEN_SECRET
+  )
+  return { token, role: user.userRol }
 }
 /**
  * *login*
@@ -60,8 +63,11 @@ const login = async ({ email, password }) => {
   if (!match) {
     throw new Error('Wrong password')
   }
-  const token = jsonwebtoken.sign({ email: user.email }, process.env.TOKEN_SECRET)
-  return { token, role: user.userRol}
+  const token = jsonwebtoken.sign(
+    { email: user.email },
+    process.env.TOKEN_SECRET
+  )
+  return { token, role: user.userRol }
 }
 
 module.exports = {
