@@ -1,11 +1,16 @@
 const router = require('express').Router()
 const {
-    getProjectsList,
-    getProjectsById,
-    createProject,
-    updateProject,
-    removeProject,
+  getProjectsList,
+  getProjectsById,
+  createProject,
+  updateProject,
+  removeProject,
+  latestProject,
+  topProject,
+  totalAmountProject,
+  ratioSuccessProject,
 } = require('../controllers/projects')
+
 router.get('/', async (request, response) => {
   try {
     const project = await getProjectsList()
@@ -14,6 +19,43 @@ router.get('/', async (request, response) => {
     response.status(500)
   }
 })
+
+router.get('/latest', async (request, response) => {
+  try {
+    const project = await latestProject()
+    response.status(200).json(project)
+  } catch (error) {
+    response.status(500)
+  }
+})
+
+router.get('/top-project', async (request, response) => {
+  try {
+    const project = await topProject()
+    response.status(200).json(project)
+  } catch (error) {
+    response.status(500)
+  }
+})
+
+router.get('/success', async (request, response) => {
+  try {
+    const project = await ratioSuccessProject()
+    response.status(200).json(project)
+  } catch (error) {
+    response.status(500)
+  }
+})
+
+router.get('/totalamount', async (request, response) => {
+  try {
+    const project = await totalAmountProject()
+    response.status(200).json(project)
+  } catch (error) {
+    response.status(500)
+  }
+})
+
 router.get('/:id', async (request, response) => {
   try {
     const { id } = request.params
