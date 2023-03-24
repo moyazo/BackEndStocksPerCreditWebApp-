@@ -13,7 +13,8 @@ const {
 
 router.get('/', async (request, response) => {
   try {
-    const project = await getProjectsList()
+    const {filters} = request.body
+    const project = await getProjectsList(filters)
     response.status(200).json(project)
   } catch (error) {
     response.status(500)

@@ -34,12 +34,13 @@ const signup = async ({
     email,
     password: hashedPassword,
     country,
-    telf,
+    phone,
     lastName,
     userRol
   }
   const user = await User.create({ ...newData, salt })
-  return jsonwebtoken.sign({ email: user.email }, process.env.TOKEN_SECRET)
+  const token = jsonwebtoken.sign({ email: user.email }, process.env.TOKEN_SECRET)
+  return { token, role: user.userRol}
 }
 /**
  * *login*
@@ -59,8 +60,8 @@ const login = async ({ email, password }) => {
   if (!match) {
     throw new Error('Wrong password')
   }
-
-  return jsonwebtoken.sign({ email: user.email }, process.env.TOKEN_SECRET)
+  const token = jsonwebtoken.sign({ email: user.email }, process.env.TOKEN_SECRET)
+  return { token, role: user.userRol}
 }
 
 module.exports = {

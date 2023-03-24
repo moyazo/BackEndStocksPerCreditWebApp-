@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       avatar: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       email: {
         type: DataTypes.STRING,
@@ -55,15 +55,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       country: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
-      telf: {
+      phone: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       lastName: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       userRol: {
         type: DataTypes.ENUM(Object.keys(UserRole)),

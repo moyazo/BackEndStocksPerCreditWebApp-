@@ -21,7 +21,7 @@ module.exports = {
       },
       avatar: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
       email: {
         type: Sequelize.STRING,
@@ -33,15 +33,15 @@ module.exports = {
       },
       country: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
-      telf: {
+      phone: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true
       },
       lastName: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
       userRol: {
         type: Sequelize.ENUM(Object.keys(UserRole)),
