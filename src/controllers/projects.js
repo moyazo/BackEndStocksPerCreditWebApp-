@@ -1,98 +1,114 @@
 const models = require('../models')
-const { Op } = require('sequelize');
+const { Op } = require('sequelize')
 //Hablar con front ¿que task? ?q inversion? ¿time min y max? Filtros!!
 const getProjectsList = async () => {
   try {
-    const projects = await models.Project.findAll();
-    if(!projects){
-      throw new Error('Error at find projects at controller getProjectsList');
+    const projects = await models.Project.findAll()
+    if (!projects) {
+      throw new Error('Error at find projects at controller getProjectsList')
     }
-    return projects;
+    return projects
   } catch (error) {
-    console.log('Error at get projects at controller getProjectsList: ' + error.message);
+    console.log(
+      'Error at get projects at controller getProjectsList: ' + error.message
+    )
   }
 }
 
 const getProjectsById = async (id) => {
   try {
-    if(!id){
-      throw new Error('id not given in controller getTagGroupsById');
+    if (!id) {
+      throw new Error('id not given in controller getTagGroupsById')
     }
     const project = await models.Project.findOne({ where: { id } })
-    if(!project){
-      throw new Error('Error at find project at controller getProjectsById');
+    if (!project) {
+      throw new Error('Error at find project at controller getProjectsById')
     }
     return project
   } catch (error) {
-    console.log('Error at get project at controller getProjectsById: ' + error.message);
+    console.log(
+      'Error at get project at controller getProjectsById: ' + error.message
+    )
   }
 }
 
 const createProject = async (data) => {
   try {
-    if(!data){
-      throw new Error('Data not given at createProject controller');
+    if (!data) {
+      throw new Error('Data not given at createProject controller')
     }
-    const project = await models.Project.create(data);
-    if(!project){
-      throw new Error('Error at creating project at controller createProject');
+    const project = await models.Project.create(data)
+    if (!project) {
+      throw new Error('Error at creating project at controller createProject')
     }
-    return project;
+    return project
   } catch (error) {
-    console.log('Error at create project at controller createProject: ' + error.message);
+    console.log(
+      'Error at create project at controller createProject: ' + error.message
+    )
   }
 }
 
 const updateProject = async (id, data) => {
   try {
-    if(!id || !data) {
-      throw new Error('id or data is not given at updateProject controller');
+    if (!id || !data) {
+      throw new Error('id or data is not given at updateProject controller')
     }
     const project = await models.Project.getProjectsById(id)
-    if(!project) {
-      throw new Error('project not found at updateTagGroup controller');
+    if (!project) {
+      throw new Error('project not found at updateTagGroup controller')
     }
     const updatedProject = await models.Project.update(
       { ...data },
       { where: { id } }
     )
-    if(!updatedTagGroup) {
-      throw new Error('tag group not updated at updateTagGroup controller');;
+    if (!updatedTagGroup) {
+      throw new Error('tag group not updated at updateTagGroup controller')
     }
   } catch (error) {
-    console.log('Error at update project at controller updateProject: ' + error.message);
+    console.log(
+      'Error at update project at controller updateProject: ' + error.message
+    )
   }
   return getProjectsById(id)
 }
 
 const removeProject = async (id) => {
   try {
-    if(!id){
-      throw new Error('id not given in controller removeProject');
+    if (!id) {
+      throw new Error('id not given in controller removeProject')
     }
-    const deleted = await models.Project.destroy({ where: { id } });
-    if(!deleted) {
-      throw new Error('project was not deleted at removeProject controller');
+    const deleted = await models.Project.destroy({ where: { id } })
+    if (!deleted) {
+      throw new Error('project was not deleted at removeProject controller')
     }
-    const project = await models.Project.findOne({ where: { id } });
-    if(project) {
-      throw new Error('project was found, so has not been deleted');
+    const project = await models.Project.findOne({ where: { id } })
+    if (project) {
+      throw new Error('project was found, so has not been deleted')
     }
     return true
   } catch (error) {
-    console.log('Error at delete project at controller removeProject: ' + error.message);
+    console.log(
+      'Error at delete project at controller removeProject: ' + error.message
+    )
   }
 }
 
 const latestProject = async () => {
-  const projects = await models.Project.findAll({
-    order: [['duration', 'ASC']],
-  });
-  const firstThreeProjects = projects.slice(0, 3);
-  const lastThreeProjects = projects.slice(-3); 
-  return [...firstThreeProjects, ...lastThreeProjects];
-};
-
+  try {
+    const projects = await models.Project.findAll({
+      order: [['duration', 'ASC']],
+    })
+    const firstThreeProjects = projects.slice(0, 3)
+    const lastThreeProjects = projects.slice(-3)
+    return [...firstThreeProjects, ...lastThreeProjects]
+  } catch (error) {
+    console.log(
+      'Error at bring latest projects at controller latestProject' +
+        error.message
+    )
+  }
+}
 
 const topProject = async () => {
   const project = await models.Project.findAll({
