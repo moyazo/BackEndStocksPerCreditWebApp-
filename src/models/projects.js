@@ -61,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       duration: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       history: {

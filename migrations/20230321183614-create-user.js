@@ -48,7 +48,7 @@ module.exports = {
         allowNull: false
       },
       salt: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: true,
       },
       createdAt: {
