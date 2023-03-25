@@ -95,7 +95,7 @@ const latestProject = async () => {
   const firstThreeProjects = projects.slice(0, 3);
   const lastThreeProjects = projects.slice(-3); 
 
-  return [...firstThreeProjects, ...lastThreeProjects];
+  return {...firstThreeProjects, ...lastThreeProjects};
 };
 
 

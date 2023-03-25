@@ -24,11 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'ProjectTag',
         foreignKey: 'projectId',
       })
-      Project.belongsToMany(models.User, {
-        through: 'User_Project',
-        as: 'users',
-        foreignKey: 'projectId',
-      }); 
+      Project.belongsTo(models.User); 
     }
   }
   Project.init(
@@ -84,6 +80,14 @@ module.exports = (sequelize, DataTypes) => {
       commerce: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      userId: {
+        allowNull: false,
+        type: DataTypes.UUID,
+        references: {
+            model: 'User',
+            key: 'id',
+        }
       },
       createdAt: {
         allowNull: false,
