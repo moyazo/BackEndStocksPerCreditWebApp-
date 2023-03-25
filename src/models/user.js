@@ -26,11 +26,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
       })
       User.belongsToMany(models.Project, {
+        through: 'Project',
         as: 'projects',
         foreignKey: 'userId'
       });
     }
-    }
+    
   }
   User.init(
     {
@@ -93,3 +94,4 @@ module.exports = (sequelize, DataTypes) => {
     }
   )
   return User
+}

@@ -30,6 +30,7 @@ const getProjectsById = async (id) => {
 
 const createProject = async (data) => {
   try {
+    console.log({data});
     if(!data){
       throw new Error('Data not given at createProject controller');
     }

@@ -24,7 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         as: 'ProjectTag',
         foreignKey: 'projectId',
       })
-      Project.belongsTo(models.User); 
+      Project.belongsTo(models.User,{
+        foreignKey: 'id',
+        as: 'user'
+      }); 
     }
   }
   Project.init(
