@@ -25,6 +25,12 @@ module.exports = (sequelize, DataTypes) => {
         as: 'InvestorGroupTag',
         foreignKey: 'userId',
       })
+      User.belongsToMany(models.Project, {
+        through: models.User_Project,
+        as: 'projects',
+        foreignKey: 'userId'
+      });
+    }
     }
   }
   User.init(
@@ -88,4 +94,3 @@ module.exports = (sequelize, DataTypes) => {
     }
   )
   return User
-}
