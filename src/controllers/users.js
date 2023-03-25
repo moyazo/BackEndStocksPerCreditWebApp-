@@ -1,5 +1,7 @@
 const db = require('../models')
 const User = db.User
+const Project = db.User
+const User_Investing_Projects = db.User_Investing_Projects
 
 const getUsers = async () => {
   try {
@@ -75,6 +77,45 @@ const getUserByEmail = async (email) => {
     return user
   } catch (error) {
     console.log('Error at `getUserByEmail` controller ' + error.message)
+  }
+}
+
+const investOnProject = async (userId,projectId,amount) => {
+  try {
+    if(!userId || projectId || !amount) {
+      throw new Error('user_id or project_id not specified at investOnProject controller');
+    }
+    const user = await User.findOne({ where: { id: userId } })
+    if(!user){
+      throw new Error('user not found at investOnProject controller');
+    }
+    const project = await Project.findOne({ where: {  id: projectId } });
+    if(!project){
+      throw new Error('project not found at investOnProject controller');
+    }
+    const newAmount = user.totalInvest + amount;
+    const updatedUser = await User.update(newAmount, {where: {id: userId}});
+    if(!updatedUser){
+      throw new Error('new amount not added to user at investOnProject controller');
+    }
+
+    const investedProject = User_Investing_Projects.findOne({ where: {  projectId, userId } })
+
+    if(!investedProject){
+      await User_Investing_Projects.create({projectId, userId, amount, totalAmount: amount});
+    }
+    const newInvestedProjectAmount = investedProject.amount.push(amount);
+    const sumAmountInvestedProject = newInvestedProjectAmount.reduce((acc, curr) => {
+      return acc + curr;
+    });
+
+    const updateInvestedProject = await User_Investing_Projects.update({totalAmount: sumAmountInvestedProject}, { where: {  projectId, userId } });
+    if(!updateInvestedProject){
+      throw new Error('error at added amount of one project at investOnProject controller');
+    }
+    return true;
+  } catch (error) {
+    console.log('Error at `investOnProject` controller ' + error.message)
   }
 }
 
@@ -172,5 +213,6 @@ module.exports = {
   getUserByEmail,
   getUserById,
   updateUser,
-  deleteUser
+  deleteUser,
+  investOnProject
 }

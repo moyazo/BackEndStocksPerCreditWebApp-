@@ -32,6 +32,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
+      totalInvest: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       actionPerCredit: {
         type: Sequelize.STRING,
         allowNull: false

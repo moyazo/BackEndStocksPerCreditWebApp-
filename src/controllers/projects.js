@@ -111,20 +111,29 @@ const latestProject = async () => {
 }
 
 const topProject = async () => {
-  const project = await models.Project.findAll({
-    order: [['minInvest', 'DESC']],
-    where: {
-      duration: { $gte: new Date() },
-    },
+  try {
+    const projects = await models.Project.findAll({
+    order: [['totalInvest', 'DESC']]
   })
-  return project
+  if(projects) {
+    throw new Error('projects not found')
+  }
+  const firstThreeProjects = projects.slice(0, 3)
+  return firstThreeProjects;
+  } catch (error) {
+    console.log(
+      'Error at bring top projects at controller topProject' +
+        error.message
+    )
+  }
 }
 // all la pasta
 const totalAmountProject = async () => {
-  const project = await models.User_Investing_Projects.findAll({
-    attributes: [[sequelize.fn('sum', sequelize.col('amount')), 'total']],
-  })
-  return project
+  const project = await models.Project.findAll({
+    attributes: [[sequelize.fn('sum', sequelize.col('totalInvest')), 'total']],
+  });
+  console.log({project});
+  return project;
 }
 
 const ratioSuccessProject = async () => {
