@@ -21,29 +21,45 @@ const signup = async ({
   lastName,
   userRol,
 }) => {
-  const existedUser = await getUserByEmail(email)
-
-  if (existedUser) {
-    throw new Error('User existed')
+  try {
+    if (!email || !password || !name){
+      throw new Error('Email,  password or name not provided at sign up controller')
+    }
+    const existedUser = await getUserByEmail(email)
+  
+    if (existedUser) {
+      throw new Error('User existed')
+    }
+    const salt = await bcrypt.genSalt(saltRounds)
+    const hashedPassword = await bcrypt.hash(password, salt)
+    if(!salt || !hashedPassword) {
+      throw new Error('Error at generating salt or hashed password') 
+    }
+    const newData = {
+      name,
+      avatar,
+      email,
+      password: hashedPassword,
+      country,
+      phone,
+      lastName,
+      userRol,
+    }
+    const user = await User.create({ ...newData, salt })
+    if(!user){
+      throw new Error('Error creating user at sign up controller')
+    }
+    const token = jsonwebtoken.sign(
+      { email: user.email },
+      process.env.TOKEN_SECRET
+    )
+    if(!token){
+      throw new Error('Error creating token')
+    }
+    return { token, role: user.userRol }
+  } catch (error) {
+    console.log('Error int sign up controller: ' + error.message)
   }
-  const salt = await bcrypt.genSalt(saltRounds)
-  const hashedPassword = await bcrypt.hash(password, salt)
-  const newData = {
-    name,
-    avatar,
-    email,
-    password: hashedPassword,
-    country,
-    phone,
-    lastName,
-    userRol,
-  }
-  const user = await User.create({ ...newData, salt })
-  const token = jsonwebtoken.sign(
-    { email: user.email },
-    process.env.TOKEN_SECRET
-  )
-  return { token, role: user.userRol }
 }
 /**
  * *login*
@@ -52,22 +68,32 @@ const signup = async ({
  * @returns {String}
  */
 const login = async ({ email, password }) => {
-  const user = await getUserByEmail(email)
-
-  if (!user) {
-    throw new Error('User not found')
+  try {
+    if (!email || !password){
+      throw new Error('Email or password not provided at log in controller')
+    }
+    const user = await getUserByEmail(email)
+  
+    if (!user) {
+      throw new Error('User not found')
+    }
+  
+    const match = await bcrypt.compare(password, user.password)
+  
+    if (!match) {
+      throw new Error('Wrong password')
+    }
+    const token = jsonwebtoken.sign(
+      { email: user.email },
+      process.env.TOKEN_SECRET
+    )
+    if(!token){
+      throw new Error('Error creating token')
+    }
+    return { token, role: user.userRol }
+  } catch (error) {
+    console.log('Error in login controller: ' + error.message)
   }
-
-  const match = await bcrypt.compare(password, user.password)
-
-  if (!match) {
-    throw new Error('Wrong password')
-  }
-  const token = jsonwebtoken.sign(
-    { email: user.email },
-    process.env.TOKEN_SECRET
-  )
-  return { token, role: user.userRol }
 }
 
 module.exports = {
