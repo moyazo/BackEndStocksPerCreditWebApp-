@@ -1,5 +1,5 @@
 const models = require('../models')
-
+const { Op } = require('sequelize');
 //Hablar con front ¿que task? ?q inversion? ¿time min y max? Filtros!!
 const getProjectsList = async () => {
   try {
@@ -30,7 +30,6 @@ const getProjectsById = async (id) => {
 
 const createProject = async (data) => {
   try {
-    console.log({data});
     if(!data){
       throw new Error('Data not given at createProject controller');
     }
@@ -88,15 +87,10 @@ const removeProject = async (id) => {
 const latestProject = async () => {
   const projects = await models.Project.findAll({
     order: [['duration', 'ASC']],
-    where: {
-      duration: { $gte: new Date() },
-    },
   });
-
   const firstThreeProjects = projects.slice(0, 3);
   const lastThreeProjects = projects.slice(-3); 
-
-  return {...firstThreeProjects, ...lastThreeProjects};
+  return [...firstThreeProjects, ...lastThreeProjects];
 };
 
 

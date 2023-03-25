@@ -25,10 +25,9 @@ module.exports = (sequelize, DataTypes) => {
         as: 'InvestorGroupTag',
         foreignKey: 'userId',
       })
-      User.belongsToMany(models.Project, {
-        through: 'Project',
-        as: 'projects',
-        foreignKey: 'userId'
+      User.hasMany(models.Project, {
+        foreignKey: 'userId',
+        as: 'projects'
       });
     }
     
@@ -94,4 +93,4 @@ module.exports = (sequelize, DataTypes) => {
     }
   )
   return User
-}
+  }
