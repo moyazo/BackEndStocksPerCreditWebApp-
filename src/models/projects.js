@@ -24,6 +24,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'ProjectTag',
         foreignKey: 'projectId',
       })
+      Project.belongsToMany(models.User, {
+        through: 'User_Project',
+        as: 'users',
+        foreignKey: 'projectId',
+      }); 
     }
   }
   Project.init(
