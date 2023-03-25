@@ -11,9 +11,9 @@ const router = require('express').Router()
  */
 router.post('/signup', async (request, response) => {
   try {
-    const { email, password } = request.body
-    if (!email || !password) {
-      response.status(502).json('Incorrect data')
+    const { email, password, name } = request.body
+    if (!email || !password || !name) {
+      response.status(502).json('Email, Password and Name Required')
     }
     const token = await signup(request.body)
     response.status(200).json(token)

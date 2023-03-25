@@ -15,6 +15,9 @@ const getUsers = async () => {
 }
 const getUserById = async (id) => {
   try {
+    if(!id){
+      throw new Error('id not specified at getUserById controller')
+    }
     const user = await User.findOne({where: {id}});
     if(!user){
       throw new Error('User not found in controller `getUserById`');
@@ -26,11 +29,17 @@ const getUserById = async (id) => {
 }
 const updateUser = async (id, newData) => {
   try {
+    if(!id || !newData){
+      throw new Error('id or newData not specified at updateUser controller')
+    }
     const user = await User.findOne({where: {id}});
     if(!user){
       throw new Error('User not found');
     }
     const updatedUser = await User.update(newData, {where: {id}});
+    if(!updatedUser){
+      throw new Error('User could not be updated at updateUser controller');
+    }
     return updatedUser;
   } catch (error) {
     console.log('Error at `updateUser` controller ' + error.message);
@@ -38,19 +47,35 @@ const updateUser = async (id, newData) => {
 }
 const deleteUser = async (id) => {
   try {
+    if(!id){
+      throw new Error('id not specified at deleteUser controller')
+    }
     const user = await User.findOne({where: {id}});
     if(!user){
       throw new Error('User not found');
     }
-    await User.destroy({where: {id}});
+    const deleted = await User.destroy({where: {id}});
+    if(!deleted){
+      throw new Error('User could not be deleted at deleteUser controller');
+    }
     return true;
   } catch (error) {
     console.log('Error at `deleteUser` controller ' + error.message);
   }
 }
 const getUserByEmail = async (email) => {
-  const user = await User.findOne({ where: { email: email } })
-  return user
+  try {
+    if(!email) {
+      throw new Error('Email not specified at getUserByEmail controller');
+    }
+    const user = await User.findOne({ where: { email: email } })
+    if(!user) {
+      throw new Error('User not found at getUserByEmail controller');
+    }
+    return user
+  } catch (error) {
+    console.log('Error at `getUserByEmail` controller ' + error.message)
+  }
 }
 
 // const getCharactersFavs = async (userId) => {

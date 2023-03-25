@@ -47,6 +47,10 @@ module.exports = {
         type: Sequelize.ENUM(Object.keys(UserRole)),
         allowNull: false
       },
+      salt: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
