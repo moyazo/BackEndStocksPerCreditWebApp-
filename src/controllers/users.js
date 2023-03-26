@@ -5,74 +5,73 @@ const User_Investing_Projects = db.User_Investing_Projects
 
 const getUsers = async () => {
   try {
-    const users = await User.findAll();
-    if(!users){
-      throw new Error('No users found in controller');
+    const users = await User.findAll()
+    if (!users) {
+      throw new Error('No users found in controller')
     }
-    return users;
+    return users
   } catch (error) {
-    console.log('Error at `getUsers controller` ' + error.message);
+    console.log('Error at `getUsers controller` ' + error.message)
   }
-  
 }
 const getUserById = async (id) => {
   try {
-    if(!id){
+    if (!id) {
       throw new Error('id not specified at getUserById controller')
     }
-    const user = await User.findOne({where: {id}});
-    if(!user){
-      throw new Error('User not found in controller `getUserById`');
+    const user = await User.findOne({ where: { id } })
+    if (!user) {
+      throw new Error('User not found in controller `getUserById`')
     }
     return user
   } catch (error) {
-    console.log('Error at `getUserById controller` ' + error.message);
+    console.log('Error at `getUserById controller` ' + error.message)
   }
 }
 const updateUser = async (id, newData) => {
   try {
-    if(!id || !newData){
+    if (!id || !newData) {
       throw new Error('id or newData not specified at updateUser controller')
     }
-    const user = await User.findOne({where: {id}});
-    if(!user){
-      throw new Error('User not found');
+    const user = await User.findOne({ where: { id } })
+    if (!user) {
+      throw new Error('User not found')
     }
-    const updatedUser = await User.update(newData, {where: {id}});
-    if(!updatedUser){
-      throw new Error('User could not be updated at updateUser controller');
+    const updatedUser = await User.update(newData, { where: { id } })
+    if (!updatedUser) {
+      throw new Error('User could not be updated at updateUser controller')
     }
-    return updatedUser;
+    return updatedUser
   } catch (error) {
-    console.log('Error at `updateUser` controller ' + error.message);
+    console.log('Error at `updateUser` controller ' + error.message)
   }
 }
 const deleteUser = async (id) => {
   try {
-    if(!id){
+    if (!id) {
       throw new Error('id not specified at deleteUser controller')
     }
-    const user = await User.findOne({where: {id}});
-    if(!user){
-      throw new Error('User not found');
+    const user = await User.findOne({ where: { id } })
+    if (!user) {
+      throw new Error('User not found')
     }
-    const deleted = await User.destroy({where: {id}});
-    if(!deleted){
-      throw new Error('User could not be deleted at deleteUser controller');
+    const deleted = await User.destroy({ where: { id } })
+    if (!deleted) {
+      throw new Error('User could not be deleted at deleteUser controller')
     }
-    return true;
+    return true
   } catch (error) {
-    console.log('Error at `deleteUser` controller ' + error.message);
+    console.log('Error at `deleteUser` controller ' + error.message)
   }
 }
 const getUserByEmail = async (email) => {
   try {
-    if(!email) {
-      throw new Error('Email not specified at getUserByEmail controller');
+    if (!email) {
+      throw new Error('Email not specified at getUserByEmail controller')
     }
     const user = await User.findOne({ where: { email: email } })
-    if(!user) {
-      throw new Error('User not found at getUserByEmail controller');
+    if (!user) {
+      throw new Error('User not found at getUserByEmail controller')
     }
     return user
   } catch (error) {
@@ -80,39 +79,71 @@ const getUserByEmail = async (email) => {
   }
 }
 
-const investOnProject = async (userId,projectId,amount) => {
+const investOnProject = async (userId, projectId, amount) => {
   try {
-    if(!userId || !projectId || !amount) {
-      throw new Error('user_id or project_id not specified at investOnProject controller');
+    if (!userId || !projectId || !amount) {
+      throw new Error(
+        'user_id or project_id not specified at investOnProject controller'
+      )
     }
-    const user = await User.findOne({ where: { id: userId } })
-    const project = await Project.findOne({ where: {  id: projectId } });
+    if (amount <= 0) {
+      return 'amount must be greater than 0';
+    }
+    const user = await User.findOne({ where: { id: userId } });
+    const project = await Project.findOne({ where: { id: projectId } });
     findUndefined(user);
     findUndefined(project);
+    if (project.minInvest > amount) {
+      return 'amount must be greater than minInvest';
+    }
     const newAmount = project.totalInvest + amount;
-    const updatedProject = await Project.update({totalInvest: newAmount}, {where: {id: projectId}});
+    if (newAmount < project.totalInvest) {
+      return 'something went wrong in order to added a new amount';
+    }
+    const updatedProject = await Project.update(
+      { totalInvest: newAmount },
+      { where: { id: projectId } }
+    );
     findUndefined(updatedProject);
 
-    let investedProject = await User_Investing_Projects.findOne({ where: {  projectId, userId } });
-    if(!investedProject){
+    let investedProject = await User_Investing_Projects.findOne({
+      where: { projectId, userId },
+    });
+    if (!investedProject) {
       const newAmountArray = [amount];
-      const newInvestedProject = await User_Investing_Projects.create({projectId, userId, amount:newAmountArray, totalAmount: amount});
+      const newInvestedProject = await User_Investing_Projects.create({
+        projectId,
+        userId,
+        amount: newAmountArray,
+        totalAmount: amount,
+      });
+      findUndefined(newInvestedProject);
       investedProject = newInvestedProject;
-
-    }else{
+    } else {
       const InvestedProjectAmount = investedProject.amount;
       InvestedProjectAmount.push(amount);
-      await User_Investing_Projects.update({amount: InvestedProjectAmount},{where: {projectId,userId}});
-      const sumAmountInvestedProject = InvestedProjectAmount.reduce((acc, curr) => {
-        return acc + curr;
-      });
-      const updateInvestedProject = await User_Investing_Projects.update({totalAmount: sumAmountInvestedProject}, { where: {  projectId, userId } });
-      if(!updateInvestedProject){
-        throw new Error('error at added amount of one project at investOnProject controller');
+      await User_Investing_Projects.update(
+        { amount: InvestedProjectAmount },
+        { where: { projectId, userId } }
+      );
+      const sumAmountInvestedProject = InvestedProjectAmount.reduce(
+        (acc, curr) => {
+          return acc + curr
+        }
+      );
+      if (investedProject.totalAmount > sumAmountInvestedProject) {
+        return 'something went wrong in order to added a new amount at User_Investing_Projects';
+      }
+      const updateInvestedProject = await User_Investing_Projects.update(
+        { totalAmount: sumAmountInvestedProject },
+        { where: { projectId, userId } }
+      );
+      if (!updateInvestedProject) {
+        return 'error at added amount of one project at investOnProject controller';
       }
     }
-    
-    return true;
+
+    return true
   } catch (error) {
     console.log('Error at `investOnProject` controller ' + error.message)
   }
@@ -206,8 +237,8 @@ const investOnProject = async (userId,projectId,amount) => {
 
 //   return { user, isAdded }
 // }
-function findUndefined(variable){
-  if(!variable){
+function findUndefined(variable) {
+  if (!variable) {
     throw new Error(`${variable} is undefined`)
   }
 }
@@ -217,5 +248,5 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
-  investOnProject
+  investOnProject,
 }

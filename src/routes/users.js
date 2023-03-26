@@ -56,7 +56,6 @@ router.post('/', async (req, res) => {
 router.post('/invest', async (req, res) => {
     try {
         const { userId, projectId, amount } = req.body;
-       
         if(!userId || !projectId || !amount){
             res.status(403).json('userId projectId amount not given at request.body');
         }
@@ -64,7 +63,7 @@ router.post('/invest', async (req, res) => {
         if(!invested) {
             res.status(502).json('user could not invest on project');
         }
-        res.status(200).json('User created successfully');
+        res.status(200).json(invested);
     } catch (error) {
         console.log('Error investing project', error.message);
     }   

@@ -48,7 +48,7 @@ router.get('/success', async (request, response) => {
   }
 })
 
-router.get('/totalamount', async (request, response) => {
+router.get('/total-amount', async (request, response) => {
   try {
     const project = await totalAmountProject()
     response.status(200).json(project)

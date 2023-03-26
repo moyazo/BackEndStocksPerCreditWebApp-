@@ -1,5 +1,5 @@
 const models = require('../models')
-const { Op } = require('sequelize')
+const { Op, Sequelize } = require('sequelize')
 //Hablar con front ¿que task? ?q inversion? ¿time min y max? Filtros!!
 const getProjectsList = async () => {
   try {
@@ -115,7 +115,7 @@ const topProject = async () => {
     const projects = await models.Project.findAll({
     order: [['totalInvest', 'DESC']]
   })
-  if(projects) {
+  if(!projects) {
     throw new Error('projects not found')
   }
   const firstThreeProjects = projects.slice(0, 3)
@@ -129,45 +129,28 @@ const topProject = async () => {
 }
 // all la pasta
 const totalAmountProject = async () => {
-  const project = await models.Project.findAll({
-    attributes: [[sequelize.fn('sum', sequelize.col('totalInvest')), 'total']],
-  });
-  console.log({project});
-  return project;
+  try {
+    const project = await models.Project.findAll({
+      attributes: [[Sequelize.fn('sum', Sequelize.col('totalInvest')), 'total']],
+    });
+    return project;
+  } catch (error) {
+    console.log('Error at get total amount at controller: ' + error.message);
+  }
 }
 
 const ratioSuccessProject = async () => {
-  const amounts = await models.User_Investing_Projects.findAll({
-    attributes: [[sequelize.fn('sum', sequelize.col('amount')), 'total']],
-    // group: ['projectId'],
+  const projects = await models.Project.findAll();
+  const projectsGoals = projects.map(project => {
+    const dataValues = project.dataValues
+    return {id: dataValues.id, goal: dataValues.goal, total: dataValues.totalInvest}
+  });
+  const successInversion = projectsGoals.filter((goal) => {
+      if(goal.goal === goal.total || goal.goal < goal.total){
+        return goal.id;
+      }
   })
-  const goals = await models.Project.findAll()
-  /**
-   * investing [{projectId, amount}]
-   *
-   * projects [{id, goal}]
-   *
-   * const ratio = projects.reduce((p, n)=>, {
-   * const totalInvest = investing.find((invest)=>invest.projectId === n.id)
-   * let total = 0;
-   * if(totalInvest){
-   * total= totalInvest.amount
-   * }
-   *
-   * if(total > 0 && total >= n.goal){
-   *    return p + 1
-   * }
-   *
-   * return p
-   *
-   * }, 0)/projects.length
-   *
-   * return ratio;
-   */
-  return {
-    goals,
-    amounts,
-  }
+  return successInversion.length/projects.length;
 }
 
 module.exports = {
