@@ -7,6 +7,7 @@ const {
     getUserById,
     updateUser,
     deleteUser,
+    investOnProject
 } = require('../controllers/users');
 
 router.get('/', async (req, res) => {
@@ -50,6 +51,22 @@ router.post('/', async (req, res) => {
         res.status(200).json('User created successfully');
     } catch (error) {
         console.log('Error creating user', error.message);
+    }   
+});
+router.post('/invest', async (req, res) => {
+    try {
+        const { userId, projectId, amount } = req.body;
+       
+        if(!userId || !projectId || !amount){
+            res.status(403).json('userId projectId amount not given at request.body');
+        }
+        const invested = await investOnProject(userId,projectId,amount);
+        if(!invested) {
+            res.status(502).json('user could not invest on project');
+        }
+        res.status(200).json('User created successfully');
+    } catch (error) {
+        console.log('Error investing project', error.message);
     }   
 });
 
