@@ -43,7 +43,7 @@ router.get('/:id', async (request, response) => {
     if(!tagGroup){
       response.status(502).json('tagGroup not given from controller');
     }
-    response.status(200).json(project);
+    response.status(200).json(tagGroup);
   } catch (error) {
     response.status(500).json('Error at get TagGroup route: ' + error.message);
   }

@@ -13,7 +13,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
-            model: 'Users',
+            model: 'Tags',
             key: 'id',
         },
         onDelete: 'CASCADE',

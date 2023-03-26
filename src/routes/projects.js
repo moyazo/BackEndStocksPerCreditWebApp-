@@ -5,10 +5,6 @@ const {
   createProject,
   updateProject,
   removeProject,
-  latestProject,
-  topProject,
-  totalAmountProject,
-  ratioSuccessProject,
 } = require('../controllers/projects')
 
 router.get('/', async (request, response) => {
@@ -20,43 +16,6 @@ router.get('/', async (request, response) => {
     response.status(500)
   }
 })
-
-router.get('/latest', async (request, response) => {
-  try {
-    const project = await latestProject()
-    response.status(200).json(project)
-  } catch (error) {
-    response.status(500)
-  }
-})
-
-router.get('/top-project', async (request, response) => {
-  try {
-    const project = await topProject()
-    response.status(200).json(project)
-  } catch (error) {
-    response.status(500)
-  }
-})
-
-router.get('/success', async (request, response) => {
-  try {
-    const project = await ratioSuccessProject()
-    response.status(200).json(project)
-  } catch (error) {
-    response.status(500)
-  }
-})
-
-router.get('/total-amount', async (request, response) => {
-  try {
-    const project = await totalAmountProject()
-    response.status(200).json(project)
-  } catch (error) {
-    response.status(500)
-  }
-})
-
 router.get('/:id', async (request, response) => {
   try {
     const { id } = request.params
@@ -70,7 +29,8 @@ router.get('/:id', async (request, response) => {
 router.post('/', async (request, response) => {
   try {
     const data = request.body
-    const project = await createProject(data)
+    const tagId = data.tagId;
+    const project = await createProject(data,tagId)
     response.status(200).json(project)
   } catch (error) {
     response.status(500).json(error.message)

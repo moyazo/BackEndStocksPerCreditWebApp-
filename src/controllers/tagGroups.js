@@ -24,6 +24,7 @@ const getTagGroupsList = async () => {
  */
 const getTagGroupsById = async (id) => {
   try {
+    console.log('hi')
     if(!id){
       throw new Error('id not given in controller getTagGroupsById');
     }
@@ -42,14 +43,27 @@ const getTagGroupsById = async (id) => {
  * @param {name}
  * @returns {JSON}
  */
-const createTagGroup = async (name) => {
+const createTagGroup = async ({name,id}) => {
   try {
-    if(!name){
-      throw new Error('name not given at createTagGroup controller');
+    if(!name || !id){
+      throw new Error('name or tag id not given at createTagGroup controller');
     }
-    const newTagGroup = await models.Tag_Group.create(name);
+    const tag = await models.Tag.findOne({where: {id}});
+    if(!tag){
+      throw new Error('tag not found at createTagGroup controller');
+    }
+    const newTagGroup = await models.Tag_Group.create({name});
+
     if(!newTagGroup){
       throw new Error('newTagGroup could not be created at createTagGroup controller');
+    }
+    const tagTagGroup = {
+      groupTagId: newTagGroup.id,
+      tagId: tag.id
+    }
+    const createdRelation = await models.Tag_Tag_Group.create(tagTagGroup)
+    if(!createdRelation) {
+      throw new Error('hi tio');
     }
     return newTagGroup;
   } catch (error) {

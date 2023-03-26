@@ -3,7 +3,7 @@ const db = require('../models/index')
 const User = db.User
 
 const ensureAuthentication = async (request, response, next) => {
-  if (request.path.includes('/auth')) {
+  if (request.path.includes('/auth') || request.path.includes('/landing')) {
     return next()
   }
 

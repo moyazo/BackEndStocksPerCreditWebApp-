@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.UUID,
       references: {
-          model: 'User',
+          model: 'Tag',
           key: 'id',
       },
       onDelete: 'CASCADE',
@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'ProjectTag',
+    modelName: 'Project_Tag',
   });
   return Project_Tag;
 };

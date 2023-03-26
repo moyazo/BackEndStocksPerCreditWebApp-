@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const userRoutes = require('./src/routes/users.js')
+const landingRoute = require('./src/routes/landing')
 const authRoutes = require('./src/routes/auth')
 const projectRoutes = require('./src/routes/projects')
 const tagRoutes = require('./src/routes/tags')
@@ -24,6 +25,7 @@ const startApp = async () => {
   );
   app.use(ensureAuthentication);
   app.use('/auth', authRoutes)
+  app.use('/landing', landingRoute)
   app.use('/users', userRoutes)
   app.use('/projects', projectRoutes)
   app.use('/tags', tagRoutes)
