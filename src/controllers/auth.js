@@ -13,12 +13,12 @@ const saltRounds = 10
  */
 const signup = async ({
   name,
-  avatar,
+  lastName,
   email,
   password,
   country,
+  city,
   phone,
-  lastName,
   userRol,
 }) => {
   try {
@@ -37,10 +37,10 @@ const signup = async ({
     }
     const newData = {
       name,
-      avatar,
       email,
       password: hashedPassword,
       country,
+      city,
       phone,
       lastName,
       userRol,

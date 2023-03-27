@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      avatar: {
+      lastName: {
         type: Sequelize.STRING,
         allowNull: true
       },
@@ -35,12 +35,12 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
       },
-      phone: {
-        type: Sequelize.INTEGER,
+      city: {
+        type: Sequelize.STRING,
         allowNull: true
       },
-      lastName: {
-        type: Sequelize.STRING,
+      phone: {
+        type: Sequelize.INTEGER,
         allowNull: true
       },
       userRol: {
