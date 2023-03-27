@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
     },
     tagId: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.UUID,
       references: {
           model: 'Tag',

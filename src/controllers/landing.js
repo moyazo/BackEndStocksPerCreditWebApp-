@@ -1,10 +1,10 @@
 const models = require('../models')
 const { Op, Sequelize } = require('sequelize')
-
+// POR HACEEEEERRRRRr
 const latestProject = async () => {
   try {
     const projects = await models.Project.findAll({
-      order: [['duration', 'ASC']],
+      order: [['duration', 'ASC']]
     })
     const firstThreeProjects = projects.slice(0, 3)
     const lastThreeProjects = projects.slice(-3)

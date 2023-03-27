@@ -46,28 +46,28 @@ const getProjectsById = async (id) => {
 
 const createProject = async (data,id) => {
   try {
-    if(!data || !id){
+    if(!data){
       throw new Error('data or tag id not given at createProject controller');
     }
-    const tag = await models.Tag.findOne({where: {id}});
-    if(!tag){
-      throw new Error('tag not found at createProject controller');
-    }
+    // const tag = await models.Tag.findOne({where: {id}});
+    // if(!tag){
+    //   throw new Error('tag not found at createProject controller');
+    // }
     const newProject = await models.Project.create(data);
     
     if(!newProject){
       throw new Error('newProject could not be created at createProject controller');
     }
-    const tagProject = {
-      projectId: newProject.id,
-      tagId: tag.id
-    }
-    console.log({tagProject})
-    const createdRelation = await models.Project_Tag.create(tagProject)
-    console.log('hi2')
-    if(!createdRelation) {
-      throw new Error('hi tio');
-    }
+    // const tagProject = {
+    //   projectId: newProject.id,
+    //   tagId: tag.id
+    // }
+    // console.log({tagProject})
+    // const createdRelation = await models.Project_Tag.create(tagProject)
+    // console.log('hi2')
+    // if(!createdRelation) {
+    //   throw new Error('hi tio');
+    // }
     return newProject;
   } catch (error) {
     console.log('Error at create project at controller createProject: ' + error.message);

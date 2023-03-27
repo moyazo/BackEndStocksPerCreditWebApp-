@@ -10,7 +10,7 @@ module.exports = {
         primaryKey: true,
       },
       tagId: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.UUID,
         references: {
             model: 'Tags',

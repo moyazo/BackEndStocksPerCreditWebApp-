@@ -1,5 +1,3 @@
-
-
 // CALL A TAG GROUPS
 /**
  * Cuando guardemos las tag groups, es decir, couando hagams el bulkCreate de todas, llamaremos a la función que nos traer las tags
@@ -18,6 +16,5 @@
  *                             tagId: tag.id
  *                         }
  *     const createdRelation = await Tag_Tag_Group.bulkCreate(tagRelation);
- *     
  * })
  */
