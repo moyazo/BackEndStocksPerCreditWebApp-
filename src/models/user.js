@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      avatar: {
+      lastName: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -62,12 +62,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      phone: {
-        type: DataTypes.INTEGER,
+      city: {
+        type: DataTypes.STRING,
         allowNull: true,
       },
       lastName: {
         type: DataTypes.STRING,
+        allowNull: true,
+      },
+      phone: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       userRol: {
