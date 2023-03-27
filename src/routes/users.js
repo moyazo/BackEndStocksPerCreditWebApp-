@@ -3,11 +3,37 @@ const router = require('express').Router();
 const { signup } = require('../controllers/auth');
 const {
     getUsers,
+    getUserByEmail,
     getUserById,
     updateUser,
     deleteUser,
     investOnProject
 } = require('../controllers/users');
+
+
+router.get('/profile', async (req, res) => {
+    try {
+        if(!req.user.email) {
+            res.status(502).json('No email in req.params');
+        }
+        const data = await getUserByEmail(req.user.email);
+        if(!data) {
+            res.status(502).json('No data in getUserByEmail');
+        }
+        await data.reload();
+        const user = {
+            id: data.id,
+            name: data.name,
+            lastName: data.lastName,
+            userRol: data.userRol,
+            email: data.email
+        };
+        res.status(200).json(user);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error.message);
+    }
+});
 
 router.get('/', async (req, res) => {
     try {
