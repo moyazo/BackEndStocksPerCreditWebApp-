@@ -21,14 +21,7 @@ router.get('/profile', async (req, res) => {
             res.status(502).json('No data in getUserByEmail');
         }
         await data.reload();
-        const user = {
-            id: data.id,
-            name: data.name,
-            lastName: data.lastName,
-            userRol: data.userRol,
-            email: data.email
-        };
-        res.status(200).json(user);
+        res.status(200).json(data);
     } catch (error) {
         console.log(error);
         res.status(500).json(error.message);
