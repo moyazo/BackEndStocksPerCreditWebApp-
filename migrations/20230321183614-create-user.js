@@ -1,6 +1,6 @@
-'use strict';
-const UserRole = { 
-  INVESTOR:'INVESTOR',
+'use strict'
+const UserRole = {
+  INVESTOR: 'INVESTOR',
   ENTREPRENEUR: 'ENTREPRENEUR',
 }
 /** @type {import('sequelize-cli').Migration} */
@@ -12,40 +12,40 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true,
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE"
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       lastName: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       email: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       country: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       city: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       phone: {
         type: Sequelize.INTEGER,
-        allowNull: true
+        allowNull: true,
       },
       userRol: {
         type: Sequelize.ENUM(Object.keys(UserRole)),
-        allowNull: false
+        allowNull: false,
       },
       salt: {
         type: Sequelize.STRING,
@@ -53,15 +53,15 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+        type: Sequelize.DATE,
+      },
+    })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
-  }
-};
+    await queryInterface.dropTable('Users')
+  },
+}

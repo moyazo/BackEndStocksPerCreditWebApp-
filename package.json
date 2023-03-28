@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "bcrypt": "5.1.0",

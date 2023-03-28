@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Tag_Tag_Group extends Model {
     /**
@@ -13,44 +11,47 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Tag_Tag_Group.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
-    },
-    groupTagId: {
-      allowNull: false,
-      type: DataTypes.UUID,
-      references: {
-          model: 'Tag_Group',
-          key: 'id',
+  Tag_Tag_Group.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
       },
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
-    },
-    tagId: {
+      groupTagId: {
         allowNull: false,
         type: DataTypes.UUID,
         references: {
-            model: 'Tag',
-            key: 'id',
+          model: 'Tag_Group',
+          key: 'id',
         },
         onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        onUpdate: 'CASCADE',
+      },
+      tagId: {
+        allowNull: false,
+        type: DataTypes.UUID,
+        references: {
+          model: 'Tag',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
     },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE
+    {
+      sequelize,
+      modelName: 'Tag_Tag_Group',
     }
-  }, {
-    sequelize,
-    modelName: 'Tag_Tag_Group',
-  });
-  return Tag_Tag_Group;
-};
+  )
+  return Tag_Tag_Group
+}

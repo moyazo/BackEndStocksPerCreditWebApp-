@@ -27,10 +27,9 @@ module.exports = (sequelize, DataTypes) => {
       })
       User.hasMany(models.Project, {
         foreignKey: 'userId',
-        as: 'projects'
-      });
+        as: 'projects',
+      })
     }
-    
   }
   User.init(
     {
@@ -97,4 +96,4 @@ module.exports = (sequelize, DataTypes) => {
     }
   )
   return User
-  }
+}

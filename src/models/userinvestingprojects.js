@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class User_Investing_Projects extends Model {
     /**
@@ -13,52 +11,55 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  User_Investing_Projects.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
-    },
-    userId: {
-      allowNull: false,
-      type: DataTypes.UUID,
-      references: {
-          model: 'User',
-          key: 'id',
+  User_Investing_Projects.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
       },
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
-    },
-    projectId: {
+      userId: {
         allowNull: false,
         type: DataTypes.UUID,
         references: {
-            model: 'Project',
-            key: 'id',
+          model: 'User',
+          key: 'id',
         },
         onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        onUpdate: 'CASCADE',
+      },
+      projectId: {
+        allowNull: false,
+        type: DataTypes.UUID,
+        references: {
+          model: 'Project',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      },
+      amount: {
+        allowNull: false,
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
+      },
+      totalAmount: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
     },
-    amount: {
-      allowNull: false,
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
-    },
-    totalAmount: {
-      allowNull: false,
-      type: DataTypes.INTEGER
-    },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE
+    {
+      sequelize,
+      modelName: 'User_Investing_Projects',
     }
-  }, {
-    sequelize,
-    modelName: 'User_Investing_Projects',
-  });
-  return User_Investing_Projects;
-};
+  )
+  return User_Investing_Projects
+}
