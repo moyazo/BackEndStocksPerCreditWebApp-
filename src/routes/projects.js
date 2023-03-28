@@ -55,8 +55,7 @@ router.get('/:id', async (request, response) => {
 router.post('/', async (request, response) => {
   try {
     const data = request.body
-    const tagId = data.tagId;
-    const project = await createProject(data,tagId)
+    const project = await createProject(data, request.user)
     response.status(200).json(project)
   } catch (error) {
     response.status(500).json(error.message)

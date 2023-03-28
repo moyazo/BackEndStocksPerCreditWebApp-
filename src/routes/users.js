@@ -56,23 +56,10 @@ router.get('/:id', async (req, res) => {
     }   
 });
 
-router.post('/', async (req, res) => {
-    try {
-        if(!req.body) {
-            res.status(502).json('Not body given at the request');
-        }
-        const newData = req.body;
-        const token = await signup(newData);
-        if(!token) {
-            res.status(502).json('User could not be created');
-        }
-        res.status(200).json('User created successfully');
-    } catch (error) {
-        console.log('Error creating user', error.message);
-    }   
-});
 router.post('/invest', async (req, res) => {
     try {
+        // TODO debemos usar el user de la request del middleware
+
         const { userId, projectId, amount } = req.body;
         if(!userId || !projectId || !amount){
             res.status(403).json('userId projectId amount not given at request.body');
@@ -106,22 +93,5 @@ router.put('/:id', async (req, res) => {
         console.log('Error modifying user', error.message);
     }   
 });
-
-router.delete('/:id', async (req, res) => {
-    try {
-        if(!req.params.id) {
-            res.status(502).json('Not id given at the request');
-        }
-        const id = req.params.id;
-        const userDeleted = await deleteUser(id);
-        if(!userDeleted) {
-            res.status(502).json('User could not be created');
-        }
-        res.status(200).json('User deleted ' + userDeleted);
-    } catch (error) {
-        console.log('Error deleting user', error.message);
-    }   
-});
-
 
 module.exports = router
