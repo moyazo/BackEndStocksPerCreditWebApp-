@@ -41,7 +41,8 @@ const totalAmountProject = async () => {
         [Sequelize.fn('sum', Sequelize.col('totalInvest')), 'total'],
       ],
     })
-    return project
+    const totalAmount = parseInt(project[0].dataValues.total);
+    return totalAmount
   } catch (error) {
     console.log('Error at get total amount at controller: ' + error.message)
   }

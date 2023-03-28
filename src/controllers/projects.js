@@ -1,25 +1,21 @@
 const models = require('../models')
-// const { Op, Sequelize } = require('sequelize')
+const { Op, Sequelize } = require('sequelize')
 //Hablar con front ¿que task? ?q inversion? ¿time min y max? Filtros!!
 const getProjectsList = async (filters) => {
   try {
-    // bank (id)
-    // bank digital (id)
-    // banco de semen (id)
-    /** 
-     * 1 - find tag groups -> controller de tag groups
-     * 2 - find tag que tengan asociado un tag group  -> controller de tag
-     * 3 - find projects asociados a tags
-     * 4 - devolver tantos arrays como filtros nos llegen
-     *   [{
-     *    projects de filtro x por tag
-     *   }]
-    */
-    const projects = await models.Project.findAll();
+    
+    const whereClause = createWhereClause(filters);
+    // goal
+    // invest return
+    // tag group
+      console.log({whereClause})
+    
+      const projects = await models.Project.findAll(whereClause)
+      console.log('hi')
     if (!projects) {
       throw new Error('Error at find projects at controller getProjectsList')
     }
-    return projects
+    return projects.length
   } catch (error) {
     console.log(
       'Error at get projects at controller getProjectsList: ' + error.message
@@ -44,19 +40,21 @@ const getProjectsById = async (id) => {
   }
 }
 
-const createProject = async (data,id) => {
+const createProject = async (data, id) => {
   try {
-    if(!data){
-      throw new Error('data or tag id not given at createProject controller');
+    if (!data) {
+      throw new Error('data or tag id not given at createProject controller')
     }
     // const tag = await models.Tag.findOne({where: {id}});
     // if(!tag){
     //   throw new Error('tag not found at createProject controller');
     // }
-    const newProject = await models.Project.create(data);
-    
-    if(!newProject){
-      throw new Error('newProject could not be created at createProject controller');
+    const newProject = await models.Project.create(data)
+
+    if (!newProject) {
+      throw new Error(
+        'newProject could not be created at createProject controller'
+      )
     }
     // const tagProject = {
     //   projectId: newProject.id,
@@ -68,9 +66,11 @@ const createProject = async (data,id) => {
     // if(!createdRelation) {
     //   throw new Error('hi tio');
     // }
-    return newProject;
+    return newProject
   } catch (error) {
-    console.log('Error at create project at controller createProject: ' + error.message);
+    console.log(
+      'Error at create project at controller createProject: ' + error.message
+    )
   }
 }
 
@@ -119,69 +119,43 @@ const removeProject = async (id) => {
   }
 }
 
-// const latestProject = async () => {
-//   try {
-//     const projects = await models.Project.findAll({
-//       order: [['duration', 'ASC']],
-//     })
-//     const firstThreeProjects = projects.slice(0, 3)
-//     const lastThreeProjects = projects.slice(-3)
-//     return [...firstThreeProjects, ...lastThreeProjects]
-//   } catch (error) {
-//     console.log(
-//       'Error at bring latest projects at controller latestProject' +
-//         error.message
-//     )
-//   }
-// }
-
-// const topProject = async () => {
-//   try {
-//     const projects = await models.Project.findAll({
-//     order: [['totalInvest', 'DESC']]
-//   })
-//   if(!projects) {
-//     throw new Error('projects not found')
-//   }
-//   const firstThreeProjects = projects.slice(0, 3)
-//   return firstThreeProjects;
-//   } catch (error) {
-//     console.log(
-//       'Error at bring top projects at controller topProject' +
-//         error.message
-//     )
-//   }
-// }
-// // all la pasta
-// const totalAmountProject = async () => {
-//   try {
-//     const project = await models.Project.findAll({
-//       attributes: [[Sequelize.fn('sum', Sequelize.col('totalInvest')), 'total']],
-//     });
-//     return project;
-//   } catch (error) {
-//     console.log('Error at get total amount at controller: ' + error.message);
-//   }
-// }
-
-// const ratioSuccessProject = async () => {
-//   const projects = await models.Project.findAll();
-//   const projectsGoals = projects.map(project => {
-//     const dataValues = project.dataValues
-//     return {id: dataValues.id, goal: dataValues.goal, total: dataValues.totalInvest}
-//   });
-//   const successInversion = projectsGoals.filter((goal) => {
-//       if(goal.goal === goal.total || goal.goal < goal.total){
-//         return goal.id;
-//       }
-//   })
-//   return successInversion.length/projects.length;
-// }
+const createWhereClause = (filters) => {
+  if(!filters){
+    return {where: undefined}
+  }
+  let whereClause = {}; 
+  let numOfFilter = 0;
+  const goalFilter = filters.goal
+  const returnInvestFilter = filters.returnInvest
+  
+  if(!goalFilter && returnInvestFilter || goalFilter && !returnInvestFilter){
+    numOfFilter = 1;
+  }else if(goalFilter && returnInvestFilter){
+    numOfFilter = 2;
+  }
+  
+  switch (numOfFilter) {
+    case 1:
+      if(!goalFilter){
+        whereClause = {where:{returnInvest:{[Op.lt]: returnInvestFilter}}}
+      }else{
+        whereClause = {where:{goal: {[Op.gte]: goalFilter}}}
+      }
+      break;
+    case 2:
+      whereClause = {where:{returnInvest:{[Op.lt]: returnInvestFilter}, goal: {[Op.lt]: goalFilter}}}
+        break;
+    default:
+      whereClause = {where:{returnInvest:undefined, goal: undefined}}
+      break;
+  }
+  return whereClause
+}
 
 module.exports = {
   getProjectsList,
   getProjectsById,
   createProject,
   updateProject,
-  removeProject
+  removeProject,
 }
