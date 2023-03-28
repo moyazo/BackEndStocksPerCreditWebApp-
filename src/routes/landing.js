@@ -9,7 +9,7 @@ const { getProjectsList } = require('../controllers/projects');
 router.get('/', async (req,res) => {
     try {   
         let allData
-        const totalProjects = await getProjectsList()
+        const totalProjects = await getProjectsList('');
         const latestProjects = await latestProject();
         const topProjects = await topProject();
         const totalAmount = await totalAmountProject();
@@ -23,7 +23,7 @@ router.get('/', async (req,res) => {
             topProjects,
             totalAmount,
             ratioSuccess,
-            totalProjects
+            totalProjects: totalProjects.length
         }
         res.status(200).json(allData);
     } catch (error) {
