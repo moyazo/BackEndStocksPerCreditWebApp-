@@ -1,21 +1,13 @@
 const models = require('../models')
 const { Op, Sequelize } = require('sequelize')
-//Hablar con front ¿que task? ?q inversion? ¿time min y max? Filtros!!
 const getProjectsList = async (filters) => {
   try {
-    
-    const whereClause = createWhereClause(filters);
-    // goal
-    // invest return
-    // tag group
-      console.log({whereClause})
-    
-      const projects = await models.Project.findAll(whereClause)
-      console.log('hi')
+      const whereClause = createWhereClause(filters);   
+      const projects = await models.Project.findAll(whereClause);
     if (!projects) {
       throw new Error('Error at find projects at controller getProjectsList')
     }
-    return projects.length
+    return projects
   } catch (error) {
     console.log(
       'Error at get projects at controller getProjectsList: ' + error.message
@@ -120,33 +112,32 @@ const removeProject = async (id) => {
 }
 
 const createWhereClause = (filters) => {
-  if(!filters){
-    return {where: undefined}
-  }
   let whereClause = {}; 
   let numOfFilter = 0;
   const goalFilter = filters.goal
-  const returnInvestFilter = filters.returnInvest
+  const returnInvestFilter = filters.returnInvestment
   
   if(!goalFilter && returnInvestFilter || goalFilter && !returnInvestFilter){
     numOfFilter = 1;
   }else if(goalFilter && returnInvestFilter){
     numOfFilter = 2;
+  }else{
+    return {where: null}
   }
   
   switch (numOfFilter) {
     case 1:
       if(!goalFilter){
-        whereClause = {where:{returnInvest:{[Op.lt]: returnInvestFilter}}}
+        whereClause = {where:{returnInvestment:{[Op.gt]: returnInvestFilter}}}
       }else{
         whereClause = {where:{goal: {[Op.gte]: goalFilter}}}
       }
       break;
     case 2:
-      whereClause = {where:{returnInvest:{[Op.lt]: returnInvestFilter}, goal: {[Op.lt]: goalFilter}}}
+      whereClause = {where:{returnInvestment:{[Op.gt]: returnInvestFilter}, goal: {[Op.gte]: goalFilter}}}
         break;
     default:
-      whereClause = {where:{returnInvest:undefined, goal: undefined}}
+      whereClause = {where:{returnInvestment:null, goal: null}}
       break;
   }
   return whereClause

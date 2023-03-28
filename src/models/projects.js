@@ -105,7 +105,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       returnInvestment: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       goal: {

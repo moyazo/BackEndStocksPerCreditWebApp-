@@ -20,7 +20,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
-            model: 'User',
+            model: 'Users',
             key: 'id',
         }
       },
@@ -84,7 +84,7 @@ module.exports = {
         allowNull: false,
       },
       returnInvestment: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: false,
       },
       goal: {

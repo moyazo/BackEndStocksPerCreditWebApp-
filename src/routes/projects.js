@@ -9,9 +9,9 @@ const {
 
 router.get('/', async (request, response) => {
   try {
-    const {goal, returnInvest} = request.body
-    const project = await getProjectsList({goal, returnInvest})
-    response.status(200).json(project)
+    const {goal, returnInvestment} = request.body;
+    const project = await getProjectsList({goal, returnInvestment});
+    response.status(200).json(project);
   } catch (error) {
     response.status(500)
   }
