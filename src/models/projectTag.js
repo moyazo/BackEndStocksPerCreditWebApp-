@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Project_Tag extends Model {
     /**
@@ -13,44 +11,47 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Project_Tag.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
-    },
-    tagId: {
-      allowNull: true,
-      type: DataTypes.UUID,
-      references: {
+  Project_Tag.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
+      },
+      tagId: {
+        allowNull: true,
+        type: DataTypes.UUID,
+        references: {
           model: 'Tag',
           key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
-    },
-    projectId: {
+      projectId: {
         allowNull: false,
         type: DataTypes.UUID,
         references: {
-            model: 'Project',
-            key: 'id',
+          model: 'Project',
+          key: 'id',
         },
         onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        onUpdate: 'CASCADE',
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
     },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE
+    {
+      sequelize,
+      modelName: 'Project_Tag',
     }
-  }, {
-    sequelize,
-    modelName: 'Project_Tag',
-  });
-  return Project_Tag;
-};
+  )
+  return Project_Tag
+}

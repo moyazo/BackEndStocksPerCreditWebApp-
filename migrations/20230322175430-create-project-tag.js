@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -13,33 +13,33 @@ module.exports = {
         allowNull: true,
         type: Sequelize.UUID,
         references: {
-            model: 'Tags',
-            key: 'id',
+          model: 'Tags',
+          key: 'id',
         },
         onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        onUpdate: 'CASCADE',
       },
       projectId: {
-          allowNull: false,
-          type: Sequelize.UUID,
-          references: {
-              model: 'Projects',
-              key: 'id',
-          },
-          onDelete: 'CASCADE',
-          onUpdate: 'CASCADE'
+        allowNull: false,
+        type: Sequelize.UUID,
+        references: {
+          model: 'Projects',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+        type: Sequelize.DATE,
+      },
+    })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Project_Tags');
-  }
-};
+    await queryInterface.dropTable('Project_Tags')
+  },
+}

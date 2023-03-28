@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'ProjectTag',
         foreignKey: 'projectId',
       })
-      Project.belongsTo(models.User, { foreignKey: 'userId' }); 
+      Project.belongsTo(models.User, { foreignKey: 'userId' })
     }
   }
   Project.init(
@@ -41,9 +41,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.UUID,
         references: {
-            model: 'User',
-            key: 'id',
-        }
+          model: 'User',
+          key: 'id',
+        },
       },
       title: {
         type: DataTypes.STRING,
@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isUrl: true
+          isUrl: true,
         },
       },
       duration: {
@@ -74,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       country: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       city: {
         type: DataTypes.STRING,

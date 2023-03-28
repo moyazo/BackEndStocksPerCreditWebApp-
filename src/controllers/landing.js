@@ -5,8 +5,8 @@ const latestProject = async () => {
     const projects = await models.Project.findAll({
       order: [['duration', 'ASC']],
       where: {
-        duration: {[Op.gt]: new Date()}
-      }
+        duration: { [Op.gt]: new Date() },
+      },
     })
     const firstThreeProjects = projects.slice(0, 3)
     const lastThreeProjects = projects.slice(-3)
@@ -39,7 +39,7 @@ const topProject = async () => {
 const eightTopProject = async () => {
   try {
     const projects = await models.Project.findAll({
-      order: [['totalInvest', 'DESC']]
+      order: [['totalInvest', 'DESC']],
     })
     if (!projects) {
       throw new Error('projects not found')
@@ -55,12 +55,16 @@ const eightTopProject = async () => {
 const eightLatestProject = async () => {
   try {
     const currentDate = new Date()
-    const oneMonthFromNow = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 31);
+    const oneMonthFromNow = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() + 31
+    )
     const projects = await models.Project.findAll({
       order: [['duration', 'DESC']],
       where: {
-        duration: {[Op.gt]: currentDate,[Op.lte]: oneMonthFromNow},
-      }
+        duration: { [Op.gt]: currentDate, [Op.lte]: oneMonthFromNow },
+      },
     })
     const firstThreeProjects = projects.slice(0, 8)
     const lastThreeProjects = projects.slice(-8)
@@ -83,7 +87,7 @@ const totalAmountProject = async () => {
         [Sequelize.fn('sum', Sequelize.col('totalInvest')), 'total'],
       ],
     })
-    const totalAmount = parseInt(project[0].dataValues.total);
+    const totalAmount = parseInt(project[0].dataValues.total)
     return totalAmount
   } catch (error) {
     console.log('Error at get total amount at controller: ' + error.message)
@@ -108,13 +112,11 @@ const ratioSuccessProject = async () => {
   return successInversion.length / projects.length
 }
 
-
-
 module.exports = {
-    latestProject,
-    topProject,
-    totalAmountProject,
-    ratioSuccessProject,
-    eightTopProject,
-    eightLatestProject
+  latestProject,
+  topProject,
+  totalAmountProject,
+  ratioSuccessProject,
+  eightTopProject,
+  eightLatestProject,
 }

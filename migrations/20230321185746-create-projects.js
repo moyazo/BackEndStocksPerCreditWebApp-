@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 const currency = {
   EUROS: 'EUROS',
   DOLLARS: 'DOLLARS',
-  POUNDS: 'POUNDS'
+  POUNDS: 'POUNDS',
 }
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -20,9 +20,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
-            model: 'Users',
-            key: 'id',
-        }
+          model: 'Users',
+          key: 'id',
+        },
       },
       title: {
         type: Sequelize.STRING,
@@ -30,13 +30,13 @@ module.exports = {
       },
       description: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       url: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-          isUrl: true
+          isUrl: true,
         },
       },
       duration: {
@@ -53,7 +53,7 @@ module.exports = {
       },
       country: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       city: {
         type: Sequelize.STRING,
@@ -103,9 +103,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    });
+    })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Projects');
-  }
-};
+    await queryInterface.dropTable('Projects')
+  },
+}
