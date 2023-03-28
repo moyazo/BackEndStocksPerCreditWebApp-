@@ -37,54 +37,6 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      image: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      goal: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      minInvest: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      totalInvest: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      actionPerCredit: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      currency: {
-        type: DataTypes.ENUM(Object.keys(currency)),
-        allowNull: false,
-      },
-      duration: {
-        type: DataTypes.DATEONLY,
-        allowNull: false,
-      },
-      history: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      proposal: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      cost: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      commerce: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       userId: {
         allowNull: false,
         type: DataTypes.UUID,
@@ -92,6 +44,73 @@ module.exports = (sequelize, DataTypes) => {
             model: 'User',
             key: 'id',
         }
+      },
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      url: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          isUrl: true
+        },
+      },
+      duration: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+      },
+      totalInvest: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      totalInvestor: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      country: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      city: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      history: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      commerce: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      proposal: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      currency: {
+        type: DataTypes.ENUM(Object.keys(currency)),
+        allowNull: false,
+      },
+      cost: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      minInvest: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      actionPerCredit: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      returnInvestment: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      goal: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
