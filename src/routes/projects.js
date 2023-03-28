@@ -25,14 +25,16 @@ router.get('/dashboard-investor', async (request, response) => {
     const allProjects = await getProjectsList({goal: 0, returnInvestment: ''});
     if(!allProjects && !eightLatest && !eightTop){
       allData = {
-        eightTop: 'No hay datos suficientes',
-        eightLatest: 'No hay datos suficientes',
+        topProjects: 'No hay datos suficientes',
+        closeSoonProjects: 'No hay datos suficientes',
+        latestProjects: 'No hay datos suficientes',
         allProjects: 'No hay datos suficientes'
       }
     }else{
       allData = {
-        eightTop,
-        eightLatest,
+        topProjects,
+        closeSoonProjects: eightLatest.slice(0,8),
+        latestProjects: eightLatest.slice(-8),
         allProjects
       } 
     }
