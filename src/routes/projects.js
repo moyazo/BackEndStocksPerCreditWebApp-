@@ -32,7 +32,7 @@ router.get('/dashboard-investor', async (request, response) => {
       }
     }else{
       allData = {
-        topProjects,
+        topProjects: eightTop,
         closeSoonProjects: eightLatest.slice(0,8),
         latestProjects: eightLatest.slice(-8),
         allProjects
