@@ -11,6 +11,8 @@ const {
   eightLatestProject,
 } = require('../controllers/landing')
 
+// TODO NONO MOLINA. ESTAS RUTAS SOLO PARA ENTREPRENEUR
+
 router.get('/', async (request, response) => {
   try {
     const { goal, returnInvestment } = request.body
@@ -59,11 +61,12 @@ router.get('/:id', async (request, response) => {
 })
 router.post('/', async (request, response) => {
   try {
-    const data = request.body
-    const project = await createProject(data, request.user)
-    response.status(200).json(project)
+    const data = request.body;
+    const entrepreneurId = request.user.id;
+    const project = await createProject(data, request.user);
+    response.status(200).json(project);
   } catch (error) {
-    response.status(500).json(error.message)
+    response.status(500).json(error.message);
   }
 })
 

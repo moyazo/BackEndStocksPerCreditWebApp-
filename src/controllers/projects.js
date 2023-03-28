@@ -28,7 +28,7 @@ const getProjectsList = async (filters) => {
       if (filters.goal) {
         whereClause.goal = {
           goal: {
-            [Op.gte]: filters.goal,
+            [Op.gte]: filters.goal
           },
         }
       }
