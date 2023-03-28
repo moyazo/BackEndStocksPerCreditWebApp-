@@ -54,18 +54,22 @@ const eightTopProject = async () => {
 }
 const eightLatestProject = async () => {
   try {
+    const currentDate = new Date()
+    const oneMonthFromNow = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 31);
     const projects = await models.Project.findAll({
-      order: [['duration', 'ASC']],
+      order: [['duration', 'DESC']],
       where: {
-        duration: {[Op.gt]: new Date()}
+        duration: {[Op.gt]: currentDate,[Op.lte]: oneMonthFromNow},
       }
     })
     const firstThreeProjects = projects.slice(0, 8)
     const lastThreeProjects = projects.slice(-8)
+    console.log(firstThreeProjects[0])
+    console.log(lastThreeProjects[0])
     return [...firstThreeProjects, ...lastThreeProjects]
   } catch (error) {
     console.log(
-      'Error at bring latest projects at controller latestProject' +
+      'Error at bring latest projects at controller eightLatestProject' +
         error.message
     )
   }
