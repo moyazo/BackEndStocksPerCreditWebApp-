@@ -27,7 +27,7 @@ const ensureAuthentication = async (request, response, next) => {
     return response.status(403).json('Wrong token')
   }
 
-  request.user = { id: user.id, email: user.email }
+  request.user = { id: user.id, email: user.email, role: user.userRol }
 
   next()
 }
