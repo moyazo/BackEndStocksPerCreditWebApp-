@@ -6,6 +6,7 @@ const {
   updateProject,
   removeProject,
 } = require('../controllers/projects')
+const { eightTopProject, eightLatestProject } = require('../controllers/landing')
 
 router.get('/', async (request, response) => {
   try {
@@ -14,6 +15,30 @@ router.get('/', async (request, response) => {
     response.status(200).json(project);
   } catch (error) {
     response.status(500)
+  }
+})
+router.get('/dashboard-investor', async (request, response) => {
+  try {
+    let allData = {};
+    const eightTop = await eightTopProject();
+    const eightLatest = await eightLatestProject();
+    const allProjects = await getProjectsList({goal: 0, returnInvestment: ''});
+    if(!allProjects && !eightLatest && !eightTop){
+      allData = {
+        eightTop: 'No hay datos suficientes',
+        eightLatest: 'No hay datos suficientes',
+        allProjects: 'No hay datos suficientes'
+      }
+    }else{
+      allData = {
+        eightTop,
+        eightLatest,
+        allProjects
+      } 
+    }
+    response.status(200).json(allData);
+  } catch (error) {
+    response.status(500).json('Error at getting data for dashboard: ' + error.message);
   }
 })
 router.get('/:id', async (request, response) => {
@@ -25,7 +50,6 @@ router.get('/:id', async (request, response) => {
     response.status(500).json(error)
   }
 })
-
 router.post('/', async (request, response) => {
   try {
     const data = request.body

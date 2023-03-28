@@ -1,10 +1,12 @@
 const models = require('../models')
 const { Op, Sequelize } = require('sequelize')
-// POR HACEEEEERRRRRr
 const latestProject = async () => {
   try {
     const projects = await models.Project.findAll({
-      order: [['duration', 'ASC']]
+      order: [['duration', 'ASC']],
+      where: {
+        duration: {[Op.gt]: new Date()}
+      }
     })
     const firstThreeProjects = projects.slice(0, 3)
     const lastThreeProjects = projects.slice(-3)
@@ -33,6 +35,42 @@ const topProject = async () => {
     )
   }
 }
+
+const eightTopProject = async () => {
+  try {
+    const projects = await models.Project.findAll({
+      order: [['totalInvest', 'DESC']]
+    })
+    if (!projects) {
+      throw new Error('projects not found')
+    }
+    const firstThreeProjects = projects.slice(0, 8)
+    return firstThreeProjects
+  } catch (error) {
+    console.log(
+      'Error at bring top projects at controller topProject' + error.message
+    )
+  }
+}
+const eightLatestProject = async () => {
+  try {
+    const projects = await models.Project.findAll({
+      order: [['duration', 'ASC']],
+      where: {
+        duration: {[Op.gt]: new Date()}
+      }
+    })
+    const firstThreeProjects = projects.slice(0, 8)
+    const lastThreeProjects = projects.slice(-8)
+    return [...firstThreeProjects, ...lastThreeProjects]
+  } catch (error) {
+    console.log(
+      'Error at bring latest projects at controller latestProject' +
+        error.message
+    )
+  }
+}
+
 // all la pasta
 const totalAmountProject = async () => {
   try {
@@ -72,5 +110,7 @@ module.exports = {
     latestProject,
     topProject,
     totalAmountProject,
-    ratioSuccessProject
+    ratioSuccessProject,
+    eightTopProject,
+    eightLatestProject
 }

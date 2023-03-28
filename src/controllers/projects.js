@@ -14,7 +14,6 @@ const getProjectsList = async (filters) => {
     )
   }
 }
-
 const getProjectsById = async (id) => {
   try {
     if (!id) {
@@ -31,7 +30,6 @@ const getProjectsById = async (id) => {
     )
   }
 }
-
 const createProject = async (data, id) => {
   try {
     if (!data) {
@@ -65,7 +63,6 @@ const createProject = async (data, id) => {
     )
   }
 }
-
 const updateProject = async (id, data) => {
   try {
     if (!id || !data) {
@@ -89,7 +86,6 @@ const updateProject = async (id, data) => {
   }
   return getProjectsById(id)
 }
-
 const removeProject = async (id) => {
   try {
     if (!id) {
@@ -110,7 +106,6 @@ const removeProject = async (id) => {
     )
   }
 }
-
 const createWhereClause = (filters) => {
   let whereClause = {}; 
   let numOfFilter = 0;
