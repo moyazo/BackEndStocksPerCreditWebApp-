@@ -3,7 +3,6 @@ const {
   getProjectsList,
   getProjectsById,
   createProject,
-  updateProject,
   removeProject,
 } = require('../controllers/projects')
 const {
@@ -67,18 +66,6 @@ router.post('/', async (request, response) => {
     response.status(200).json(project);
   } catch (error) {
     response.status(500).json(error.message);
-  }
-})
-
-router.put('/:id', async (request, response) => {
-  try {
-    const { id } = request.params
-    const data = request.body
-    console.log({ id, data })
-    const project = await updateProject(id, data)
-    response.status(200).json(project)
-  } catch (error) {
-    response.status(500)
   }
 })
 router.delete('/:id', async (request, response) => {

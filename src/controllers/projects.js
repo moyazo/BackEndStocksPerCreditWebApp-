@@ -108,7 +108,6 @@ const getProjectsById = async (id) => {
     throw new Error(error)
   }
 }
-
 const createProject = async ({ tags, ...partial }, user) => {
   try {
     let tagUserArray = [];
@@ -143,43 +142,12 @@ const createProject = async ({ tags, ...partial }, user) => {
     throw new Error(error)
   }
 }
-
-const updateProject = async (id, data) => {
-  try {
-    if (!id || !data) {
-      throw new Error('id or data is not given at updateProject controller')
-    }
-    const project = await getProjectsById(id)
-
-    if (!project) {
-      throw new Error('project not found at updateTagGroup controller')
-    }
-
-    await models.Project.update({ ...data }, { where: { id } })
-
-    return getProjectsById(id)
-  } catch (error) {
-    console.log(
-      'Error at update project at controller updateProject: ' + error.message
-    )
-  }
-}
 const removeProject = async (id) => {
   try {
     if (!id) {
       throw new Error('id not given in controller removeProject')
     }
-
-    const project = await models.Project.findOne({ where: { id } })
-    if (project) {
-      throw new Error('project was found, so has not been deleted')
-    }
-
-    const deleted = await models.Project.destroy({ where: { id } })
-    if (!deleted) {
-      throw new Error('project was not deleted at removeProject controller')
-    }
-
+    await models.Project.destroy({ where: { id } })
     return true
   } catch (error) {
     console.log(
@@ -192,6 +160,5 @@ module.exports = {
   getProjectsList,
   getProjectsById,
   createProject,
-  updateProject,
   removeProject,
 }
