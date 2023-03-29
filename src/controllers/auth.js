@@ -93,7 +93,7 @@ const login = async ({ email, password }) => {
     if (!token) {
       throw new Error('Error creating token')
     }
-    return { token, role: user.userRol }
+    return { token ,role: user.userRol }
   } catch (error) {
     console.log('Error in login controller: ' + error.message)
   }

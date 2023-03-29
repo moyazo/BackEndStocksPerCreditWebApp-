@@ -28,7 +28,10 @@ const ensureAuthentication = async (request, response, next) => {
   }
 
   request.user = { id: user.id, email: user.email, role: user.userRol }
-
+  if(request.path.includes('/projects') && user.userRol === 'INVESTOR'){
+    return response.status(403).json('You do not have permission');
+  }
+  
   next()
 }
 
