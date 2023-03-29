@@ -75,7 +75,6 @@ const getProjectsList = async (filters) => {
         whereClauseReturnInvestments,
       ],
     }
-    console.log(whereClause)
     return await models.Project.findAll({
       where: whereClause[Op.and] || null,
     })
@@ -112,6 +111,7 @@ const getProjectsById = async (id) => {
 
 const createProject = async ({ tags, ...partial }, user) => {
   try {
+    let tagUserArray = [];
     if (!partial) {
       throw new Error('Missing project data')
     }
@@ -124,12 +124,17 @@ const createProject = async ({ tags, ...partial }, user) => {
       throw new Error('You dont have permissions')
     }
 
-    const project = await models.Project.create({ ...data, userId: user.id })
-
+    const project = await models.Project.create({ ...partial, userId: user.id })
+      tags.forEach((tag) => {
+        tagUserArray.push({
+          tagId:tag,
+          projectId: project.id
+        })
+    });
+    await models.Project_Tag.bulkCreate(tagUserArray);
     /**
      * TODO AQUI Debemos crear la asociación del proyecto con las tags
      */
-
     return project
   } catch (error) {
     console.log(
