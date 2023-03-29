@@ -20,6 +20,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'investingProjects',
         foreignKey: 'userId',
       })
+      User.belongsToMany(models.Project, {
+        through: 'User_Project',
+        as: 'entrepreneurProjects',
+        foreignKey: 'userId',
+      })
       User.belongsToMany(models.Tag_Group, {
         through: 'Investor_Tag_Group',
         as: 'InvestorGroupTag',

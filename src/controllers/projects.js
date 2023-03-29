@@ -10,43 +10,74 @@ const { UserRole } = require('../common/constants')
  * @param {string} filters.userId
  * @param {boolean} filters.favorites
  * @param {boolean} filters.investments
- * @return {Promise<Model[]>}
+ * @return {Promise<models[]>}
  */
 const getProjectsList = async (filters) => {
   try {
     let whereClause = {}
+    let whereClauseFavorites = {}
+    let whereClauseInvestments = {}
+    let whereClauseGoal = {}
+    let whereClauseReturnInvestments = {}
 
     if (filters) {
       if (filters.favorites && filters.userId) {
-        // TODO Debo devolver los proyectos favoritos del investor
+        whereClauseFavorites = {
+          model: models.User,
+          as: 'favoriteProjects',
+          through: {
+            model: models.User_Favorites_Projects,
+            as: 'favoriteProjects',
+            attributes: ['id', 'userId', 'projectId'],
+          },
+          where: { id: filters.userId },
+        }
       }
 
       if (filters.investments && filters.userId) {
-        // TODO Debo devolver los proyectos invertidos del investor
+        whereClauseInvestments = {
+          model: models.User,
+          as: 'investingProjects',
+          through: {
+            model: models.User_Investing_Projects,
+            as: 'investingProjects',
+            attributes: ['id', 'userId', 'projectId', 'amount', 'totalAmount'],
+          },
+          where: { id: filters.userId },
+        }
       }
 
-      if (filters.goal) {
-        whereClause.goal = {
+      if (filters.goal.min && filters.goal.max) {
+        whereClauseGoal = {
           goal: {
-            [Op.gte]: filters.goal
+            [Op.and]: [
+              { [Op.gt]: filters.goal.min },
+              { [Op.lt]: filters.goal.max },
+            ],
           },
         }
       }
 
       if (filters.returnInvestment) {
-        whereClause.returnInvestment = {
-          [Op.gt]: filters.returnInvestment,
+        whereClauseReturnInvestments = {
+          returnInvestment: {
+            [Op.gt]: new Date(filters.returnInvestment),
+          },
         }
-      }
-
-      if (filters.userId) {
-        // TODO si entramos aqui significa que vamos a recuperar los proyectos del emprendendor
-        whereClause.userId = filters.userId
       }
     }
 
+    whereClause = {
+      [Op.and]: [
+        whereClauseFavorites,
+        whereClauseInvestments,
+        whereClauseGoal,
+        whereClauseReturnInvestments,
+      ],
+    }
+    console.log(whereClause)
     return await models.Project.findAll({
-      where: whereClause || null,
+      where: whereClause[Op.and] || null,
     })
   } catch (error) {
     console.log(
