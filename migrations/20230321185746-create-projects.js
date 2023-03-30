@@ -47,10 +47,6 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      totalInvestor: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
       country: {
         type: Sequelize.STRING,
         allowNull: true,
