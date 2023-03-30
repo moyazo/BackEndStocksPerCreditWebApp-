@@ -14,11 +14,12 @@ const { UserRole } = require('../common/constants')
  */
 const getProjectsList = async (filters) => {
   try {
-    let whereClause = {}
-    let whereClauseFavorites = {}
-    let whereClauseInvestments = {}
-    let whereClauseGoal = {}
-    let whereClauseReturnInvestments = {}
+    let whereClause = {};
+    let whereClauseFavorites = {};
+    let whereClauseInvestments = {};
+    let whereClauseGoal = {};
+    let whereClauseReturnInvestments = {};
+    let tagsObject = [];
 
     if (filters) {
       if (filters.favorites && filters.userId) {
@@ -47,23 +48,32 @@ const getProjectsList = async (filters) => {
         }
       }
 
-      if (filters.goal.min && filters.goal.max) {
+      const investmentAmount = filters.investmentAmount.substring(1, filters.investmentAmount.length - 1).split(",")
+      if (investmentAmount.min && investmentAmount.max) {
         whereClauseGoal = {
           goal: {
             [Op.and]: [
-              { [Op.gt]: filters.goal.min },
-              { [Op.lt]: filters.goal.max },
+              { [Op.gte]: investmentAmount.min },
+              { [Op.lte]: investmentAmount.max },
             ],
           },
         }
       }
 
-      if (filters.returnInvestment) {
+      if (filters.date) {
         whereClauseReturnInvestments = {
           returnInvestment: {
-            [Op.gt]: new Date(filters.returnInvestment),
+            [Op.lte]: new Date(filters.date),
+            [Op.gte]: new Date(),
           },
         }
+      }
+
+      if (filters.tags) {
+        const tagsArray = filters.tags.substring(1, filters.tags.length - 1).split(",")
+        tagsArray.forEach(tag => {
+            tagsObject.push(tag);
+        })
       }
     }
 
@@ -75,8 +85,29 @@ const getProjectsList = async (filters) => {
         whereClauseReturnInvestments,
       ],
     }
+    
+    const tagGroupsWithTags = await models.Tag_Group.findAll({
+      where: {id: {[Op.in]: tagsObject}},
+      include: {
+        model: models.Tag,
+        as: 'GroupTag',
+      }
+    });
+    const tagsIdOfTagGroups = tagGroupsWithTags.map(tagGroup => {
+        const arrayTagsId = tagGroup.dataValues.GroupTag.map((tag) => tag.dataValues.id)
+        return arrayTagsId;
+    })
+
+    const allTagsIds = [].concat(...tagsIdOfTagGroups);
     return await models.Project.findAll({
       where: whereClause[Op.and] || null,
+      include:{
+        model: models.Tag,
+        as: 'ProjectTag',
+        where:{
+          id: {[Op.in]: allTagsIds}
+        }
+      }
     })
   } catch (error) {
     console.log(
