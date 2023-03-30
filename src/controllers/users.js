@@ -64,17 +64,17 @@ const getUserByEmail = async (email) => {
 const investOnProject = async (userId, projectId, amount) => {
   try {
     if (!userId || !projectId || !amount) {
-      return 'user_id or project_id not specified at investOnProject controller'
+      throw new Error('user_id or project_id not specified at investOnProject controller')
     }
 
     if (amount <= 0) {
-      return 'amount must be greater than 0'
+      throw new Error('amount must be greater than 0')
     }
 
     const user = await User.findOne({ where: { id: userId } })
     const project = await Project.findOne({ where: { id: projectId } })
     if (!user) {
-      return 'user not found'
+      throw new Error('user not found')
     }
     if (!project) {
       throw new Error('project not found')
@@ -83,37 +83,36 @@ const investOnProject = async (userId, projectId, amount) => {
       throw new Error('amount must be greater than minInvest')
     }
 
-    const newAmount = project.totalInvest + amount
+    const newAmount = project.totalInvest + amount.total
     if (newAmount < project.totalInvest) {
       throw new Error('something went wrong in order to added a new amount')
     }
-
     await Project.update(
       { totalInvest: newAmount },
       { where: { id: projectId } }
     )
-
     let investedProject = await User_Investing_Projects.findOne({
       where: { projectId, userId },
     })
     const newAmountEntry = {
-      total: amount,
+      total: amount.total,
       date: new Date(),
     }
-
+    console.log(newAmountEntry)
     if (!investedProject) {
+
       await User_Investing_Projects.create({
         projectId,
         userId,
         // TODO actualizar amount a amount history de tipo array de numbers a array de objetos
-        amountHistory: [newAmountEntry],
-        totalAmount: amount,
+        amount: [newAmountEntry],
+        totalAmount: amount.total,
       })
     } else {
       await User_Investing_Projects.update(
         {
-          amountHistory: [...investedProject.amountHistory, newAmountEntry],
-          totalAmount: investedProject.totalAmount + amount,
+          amount: [...investedProject.amount, newAmountEntry],
+          totalAmount: investedProject.totalAmount + amount.total,
         },
         { where: { projectId, userId } }
       )
@@ -126,10 +125,58 @@ const investOnProject = async (userId, projectId, amount) => {
   }
 }
 
+const toggleTaskToFavoriteProjects = async (userId, projectId) => {
+  try {
+      let user = await User.findOne({
+          where: { id: userId },
+          attributes: { exclude: ['password', 'salt'] },
+          include: {
+              model: db.Project,
+              as: 'favoriteProjects',
+          },
+      });
+
+      let currentFavList = (user.favoriteProjects || []).map(
+          (item) => item.id
+      );
+      let existed = currentFavList.includes(projectId);
+      let isAdded = false;
+
+      if (!existed) {
+          const project = await db.Project.findOne({
+              where: { id: projectId },
+          });
+
+          if (!project) {
+              throw new Error('Project not found');
+          }
+          await db.User_Favorites_Projects.create({userId, projectId})
+          
+          isAdded = true;
+      } else {
+        console.log('hi')
+          await db.User_Favorites_Projects.destroy({
+            where: {userId, projectId}
+          })
+      }
+
+      const projects = await db.Project.findAll({
+          where: { id: currentFavList },
+      });
+      
+      user.favoritesCharacters = projects;
+
+      return { user, isAdded };
+  } catch (error) {
+      console.log('Error in toggleTaskToFavoriteCharacter', error.message);
+  }
+};
+
 module.exports = {
   getUsers,
   getUserByEmail,
   getUserById,
   updateUser,
   investOnProject,
+  toggleTaskToFavoriteProjects
 }

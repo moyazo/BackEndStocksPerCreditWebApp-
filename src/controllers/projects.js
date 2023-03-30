@@ -70,6 +70,9 @@ const getProjectsList = async (filters) => {
       }
 
       if (filters.tags) {
+        if(!filters.tags.includes('"')) {
+          tagsArray = null
+        }
         const tagsArray = filters.tags.substring(1, filters.tags.length - 1).split(",")
         tagsArray.forEach(tag => {
             tagsObject.push(tag);
@@ -85,7 +88,7 @@ const getProjectsList = async (filters) => {
         whereClauseReturnInvestments,
       ],
     }
-    
+    console.log(tagsObject)
     const tagGroupsWithTags = await models.Tag_Group.findAll({
       where: {id: {[Op.in]: tagsObject}},
       include: {

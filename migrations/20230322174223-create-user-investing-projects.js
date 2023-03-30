@@ -29,7 +29,16 @@ module.exports = {
       },
       amount: {
         allowNull: false,
-        type: Sequelize.ARRAY(Sequelize.INTEGER),
+        type: Sequelize.JSON({
+          total: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+          },
+          date: {
+            type: Sequelize.DATE,
+            allowNull: false,
+          },
+        }),
       },
       totalAmount: {
         allowNull: false,

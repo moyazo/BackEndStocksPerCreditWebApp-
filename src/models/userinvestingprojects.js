@@ -41,7 +41,16 @@ module.exports = (sequelize, DataTypes) => {
       },
       amount: {
         allowNull: false,
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        type: DataTypes.JSON({
+          total: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+          },
+          date: {
+            type: DataTypes.DATE,
+            allowNull: false,
+          },
+        }),
       },
       totalAmount: {
         allowNull: false,

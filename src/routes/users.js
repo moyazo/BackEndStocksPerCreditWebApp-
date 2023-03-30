@@ -7,6 +7,7 @@ const {
   getUserById,
   updateUser,
   investOnProject,
+  toggleTaskToFavoriteProjects
 } = require('../controllers/users')
 /**
  * *ALL DATA FROM ONE USER IN ORDER TO SHOW AT PROFILE VIEW ON FRONT-END*
@@ -64,7 +65,8 @@ router.post('/invest', async (req, res) => {
   try {
     // TODO debemos usar el user de la request del middleware
 
-    const { userId, projectId, amount } = req.body
+    const { projectId, amount } = req.body
+    const userId = req.user.id;
     if (!userId || !projectId || !amount) {
       res.status(403).json('userId projectId amount not given at request.body')
     }
@@ -77,6 +79,32 @@ router.post('/invest', async (req, res) => {
     console.log('Error investing project', error.message)
   }
 })
+
+router.post(
+  '/favorites/:projectId',
+  async (request, response) => {
+      try {
+          const { projectId } = request.params;
+          const userID = request.user.id;
+          const { user, isAdded } = await toggleTaskToFavoriteProjects(
+              userID,
+              projectId
+          );
+
+          if (isAdded) {
+              response.status(200).json('Favorite added ok');
+          } else {
+              response.status(200).json('Favorite deleted ok');
+          }
+      } catch (error) {
+          if (error.message === 'No exists data in database') {
+              response.status(400).json(error.message);
+          } else {
+              response.status(500).json('No exists data in database');
+          }
+      }
+  }
+);
 
 router.put('/:id', async (req, res) => {
   try {
