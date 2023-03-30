@@ -5,11 +5,11 @@ const {
   totalAmountProject,
   ratioSuccessProject,
 } = require('../controllers/landing')
-const { getProjectsList } = require('../controllers/projects')
+const { getProjectsGeneral } = require('../controllers/projects')
 
 router.get('/', async (req, res) => {
   try {
-    const totalProjects = await getProjectsList()
+    const totalProjects = await getProjectsGeneral()
     const latestProjects = await latestProject()
     const topProjects = await topProject()
     const totalAmount = await totalAmountProject()
