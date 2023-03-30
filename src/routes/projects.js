@@ -4,7 +4,7 @@ const {
   getProjectsById,
   createProject,
   removeProject,
-  getProjectsGeneral
+  getProjectsGeneral,
 } = require('../controllers/projects')
 const {
   eightTopProject,
@@ -22,27 +22,18 @@ router.get('/', async (request, response) => {
     response.status(500)
   }
 })
+
 router.get('/dashboard-investor', async (request, response) => {
   try {
     console.log('hola')
     let allData = {}
-    const eightTop = await eightTopProject();
-    const eightLatest = await eightLatestProject();
-    const allProjects = await getProjectsGeneral();
-    if (!allProjects && !eightLatest && !eightTop) {
-      allData = {
-        topProjects: 'No hay datos suficientes',
-        closeSoonProjects: 'No hay datos suficientes',
-        latestProjects: 'No hay datos suficientes',
-        allProjects: 'No hay datos suficientes',
-      }
-    } else {
-      allData = {
-        topProjects: eightTop,
-        closeSoonProjects: eightLatest.slice(0, 8),
-        latestProjects: eightLatest.slice(-8),
-        allProjects,
-      }
+    const eightTop = await eightTopProject()
+    const eightLatest = await eightLatestProject()
+
+    allData = {
+      topProjects: eightTop,
+      closeSoonProjects: eightLatest,
+      latestProjects: eightLatest,
     }
     response.status(200).json(allData)
   } catch (error) {
@@ -62,12 +53,12 @@ router.get('/:id', async (request, response) => {
 })
 router.post('/', async (request, response) => {
   try {
-    const data = request.body;
-    const entrepreneurId = request.user.id;
-    const project = await createProject(data, request.user);
-    response.status(200).json(project);
+    const data = request.body
+    const entrepreneurId = request.user.id
+    const project = await createProject(data, request.user)
+    response.status(200).json(project)
   } catch (error) {
-    response.status(500).json(error.message);
+    response.status(500).json(error.message)
   }
 })
 router.delete('/:id', async (request, response) => {

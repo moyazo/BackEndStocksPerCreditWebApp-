@@ -14,12 +14,7 @@ const { UserRole } = require('../common/constants')
  */
 const getProjectsList = async (filters) => {
   try {
-    let whereClause = {};
-    let whereClauseFavorites = {};
-    let whereClauseInvestments = {};
-    let whereClauseGoal = {};
-    let whereClauseReturnInvestments = {};
-    let tagsObject = [];
+    let whereClause = {}
 
     if (filters) {
       if (filters.favorites && filters.userId) {
@@ -34,7 +29,6 @@ const getProjectsList = async (filters) => {
           where: { id: filters.userId },
         }
       }
-
       if (filters.investments && filters.userId) {
         whereClauseInvestments = {
           model: models.User,
@@ -48,69 +42,57 @@ const getProjectsList = async (filters) => {
         }
       }
 
-      const investmentAmount = filters.investmentAmount.substring(1, filters.investmentAmount.length - 1).split(",")
-      if (investmentAmount.min && investmentAmount.max) {
-        whereClauseGoal = {
-          goal: {
-            [Op.and]: [
-              { [Op.gte]: investmentAmount.min },
-              { [Op.lte]: investmentAmount.max },
-            ],
-          },
+      if (filters.investmentAmount) {
+        const { min, max } = JSON.parse(filters.investmentAmount)
+        whereClause.goal = {
+          [Op.and]: [{ [Op.gte]: min }, { [Op.lte]: max }],
         }
       }
 
       if (filters.date) {
-        whereClauseReturnInvestments = {
-          returnInvestment: {
-            [Op.lte]: new Date(filters.date),
-            [Op.gte]: new Date(),
-          },
+        whereClause.ReturnOnInvestment = {
+          [Op.and]: { [Op.lte]: new Date(filters.date), [Op.gte]: new Date() },
         }
       }
 
       if (filters.tags) {
-        if(!filters.tags.includes('"')) {
-          tagsArray = null
-        }
-        const tagsArray = filters.tags.substring(1, filters.tags.length - 1).split(",")
-        tagsArray.forEach(tag => {
-            tagsObject.push(tag);
+        let tagsIds = []
+        const groupTagsIds = filters.tags.split(',')
+        const groupTags = await models.Tag_Group.findAll({
+          where: { id: groupTagsIds },
+          include: {
+            model: models.Tag,
+            as: 'GroupTag',
+          },
         })
+        for (const groupTag of groupTags) {
+          const ids = groupTag.GroupTag.map((item) => item.id)
+          tagsIds = tagsIds.concat(ids)
+        }
+        const tagsProjects = await models.Project_Tag.findAll({
+          where: { tagId: tagsIds },
+        })
+        const projectsIds = tagsProjects.map((tp) => tp.projectId)
+
+        if (projectsIds?.length > 0) {
+          whereClause.id = projectsIds
+        }
       }
     }
 
-    whereClause = {
-      [Op.and]: [
-        whereClauseFavorites,
-        whereClauseInvestments,
-        whereClauseGoal,
-        whereClauseReturnInvestments,
-      ],
-    }
-    console.log(tagsObject)
-    const tagGroupsWithTags = await models.Tag_Group.findAll({
-      where: {id: {[Op.in]: tagsObject}},
-      include: {
-        model: models.Tag,
-        as: 'GroupTag',
-      }
-    });
-    const tagsIdOfTagGroups = tagGroupsWithTags.map(tagGroup => {
-        const arrayTagsId = tagGroup.dataValues.GroupTag.map((tag) => tag.dataValues.id)
-        return arrayTagsId;
-    })
-
-    const allTagsIds = [].concat(...tagsIdOfTagGroups);
     return await models.Project.findAll({
-      where: whereClause[Op.and] || null,
-      include:{
+      where: whereClause
+        ? {
+            [Op.and]: whereClause,
+          }
+        : null,
+      /*include: {
         model: models.Tag,
         as: 'ProjectTag',
-        where:{
-          id: {[Op.in]: allTagsIds}
-        }
-      }
+        where: {
+          id: { [Op.in]: allTagsIds },
+        },
+      },*/
     })
   } catch (error) {
     console.log(
@@ -120,23 +102,22 @@ const getProjectsList = async (filters) => {
   }
 }
 const getProjectsGeneral = async (userId) => {
-  if(!userId){
+  if (!userId) {
     return await models.Project.findAll({
       include: {
         model: models.Tag,
-        as: 'ProjectTag'
-      }
-    });
-  }else{
+        as: 'ProjectTag',
+      },
+    })
+  } else {
     return await models.Project.findAll({
-      where: {userId},
+      where: { userId },
       include: {
         model: models.Tag,
-        as: 'ProjectTag'
-      }
-    });
+        as: 'ProjectTag',
+      },
+    })
   }
-  
 }
 
 /**
@@ -149,12 +130,12 @@ const getProjectsById = async (id) => {
     if (!id) {
       throw new Error('id not given in controller getTagGroupsById')
     }
-    const project = await models.Project.findOne({ 
+    const project = await models.Project.findOne({
       where: { id },
       include: {
         model: models.Tag,
-        as: 'ProjectTag'
-      }
+        as: 'ProjectTag',
+      },
     })
     if (!project) {
       throw new Error('Error at find project at controller getProjectsById')
@@ -169,7 +150,7 @@ const getProjectsById = async (id) => {
 }
 const createProject = async ({ tags, ...partial }, user) => {
   try {
-    let tagUserArray = [];
+    let tagUserArray = []
     if (!partial) {
       throw new Error('Missing project data')
     }
@@ -183,13 +164,13 @@ const createProject = async ({ tags, ...partial }, user) => {
     }
 
     const project = await models.Project.create({ ...partial, userId: user.id })
-      tags.forEach((tag) => {
-        tagUserArray.push({
-          tagId:tag,
-          projectId: project.id
-        })
-    });
-    await models.Project_Tag.bulkCreate(tagUserArray);
+    tags.forEach((tag) => {
+      tagUserArray.push({
+        tagId: tag,
+        projectId: project.id,
+      })
+    })
+    await models.Project_Tag.bulkCreate(tagUserArray)
     /**
      * TODO AQUI Debemos crear la asociación del proyecto con las tags
      */
@@ -220,5 +201,5 @@ module.exports = {
   getProjectsById,
   createProject,
   removeProject,
-  getProjectsGeneral
+  getProjectsGeneral,
 }
