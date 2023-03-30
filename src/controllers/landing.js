@@ -68,8 +68,6 @@ const eightLatestProject = async () => {
     })
     const firstThreeProjects = projects.slice(0, 8)
     const lastThreeProjects = projects.slice(-8)
-    console.log(firstThreeProjects[0])
-    console.log(lastThreeProjects[0])
     return [...firstThreeProjects, ...lastThreeProjects]
   } catch (error) {
     console.log(

@@ -81,7 +81,7 @@ router.put('/:id', async (req, res) => {
     if (!req.body) {
       res.status(502).json('Not body given at the request')
     }
-    const id = req.params.id
+    const id = req.user.id
     const newData = req.body
     const user = await updateUser(id, newData)
     if (!user) {

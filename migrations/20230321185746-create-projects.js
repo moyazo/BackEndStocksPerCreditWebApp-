@@ -29,8 +29,8 @@ module.exports = {
         allowNull: false,
       },
       description: {
-        type: Sequelize.STRING,
-        allowNull: true,
+        type: Sequelize.TEXT,
+        allowNull: false,
       },
       url: {
         type: Sequelize.STRING,
@@ -45,11 +45,15 @@ module.exports = {
       },
       totalInvest: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
+      },
+      totalInvestor: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
       },
       country: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       city: {
         type: Sequelize.STRING,
@@ -75,7 +79,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      minInvest: {
+      minimuminvestment: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
@@ -83,7 +87,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      returnInvestment: {
+      ReturnOnInvestment: {
         type: Sequelize.DATEONLY,
         allowNull: false,
       },
@@ -98,7 +102,7 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-      },
+      }
     })
   },
   async down(queryInterface, Sequelize) {
