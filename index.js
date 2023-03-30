@@ -15,7 +15,7 @@ const app = express()
 const startApp = async () => {
   dotenv.config()
   app.use(cors())
-  const port = process.env.PORT
+  const port = process.env.PORT | 8000
 
   app.use(bodyParser.json())
   app.use(
