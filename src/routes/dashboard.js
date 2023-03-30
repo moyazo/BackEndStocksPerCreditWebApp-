@@ -1,7 +1,8 @@
 'use strict';
 const router = require('express').Router();
 const {
-  getProjectsList
+  getProjectsList,
+  getProjectsGeneral
 } = require('../controllers/projects');
 // TODO GET DASHBOARD ENTREPRENEUR
 /**
@@ -13,8 +14,7 @@ const {
 router.get('/entrepreneur', async (req, res) => {
   try {
     let filters = req.body
-    filters = {...filters, userId: req.user.id}
-    const projects = await getProjectsList(filters);
+    const projects = await getProjectsGeneral(req.user.id);
     res.status(200).json(projects)
   } catch (error) {
     res.status(500).json(error.message);

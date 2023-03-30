@@ -116,13 +116,24 @@ const getProjectsList = async (filters) => {
     throw new Error(error)
   }
 }
-const getProjectsGeneral = async () => {
-  return await models.Project.findAll({
-    include: {
-      model: models.Tag,
-      as: 'ProjectTag'
-    }
-  });
+const getProjectsGeneral = async (userId) => {
+  if(!userId){
+    return await models.Project.findAll({
+      include: {
+        model: models.Tag,
+        as: 'ProjectTag'
+      }
+    });
+  }else{
+    return await models.Project.findAll({
+      where: {userId},
+      include: {
+        model: models.Tag,
+        as: 'ProjectTag'
+      }
+    });
+  }
+  
 }
 
 /**
