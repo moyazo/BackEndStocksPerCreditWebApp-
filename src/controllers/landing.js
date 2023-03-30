@@ -6,7 +6,7 @@ const latestProject = async () => {
       order: [['duration', 'ASC']],
       include: {
         model: models.Tag,
-        as: 'ProjectTag'
+        as: 'ProjectTag',
       },
       where: {
         duration: { [Op.gt]: new Date() },
@@ -29,8 +29,8 @@ const topProject = async () => {
       order: [['totalInvest', 'DESC']],
       include: {
         model: models.Tag,
-        as: 'ProjectTag'
-      }
+        as: 'ProjectTag',
+      },
     })
     if (!projects) {
       throw new Error('projects not found')
@@ -46,18 +46,15 @@ const topProject = async () => {
 
 const eightTopProject = async () => {
   try {
-    const projects = await models.Project.findAll({
+    return await models.Project.findAll({
       order: [['totalInvest', 'DESC']],
+      limit: 8,
     })
-    if (!projects) {
-      throw new Error('projects not found')
-    }
-    const firstThreeProjects = projects.slice(0, 8)
-    return firstThreeProjects
   } catch (error) {
     console.log(
       'Error at bring top projects at controller topProject' + error.message
     )
+    throw new Error(error)
   }
 }
 const eightLatestProject = async () => {
@@ -68,20 +65,19 @@ const eightLatestProject = async () => {
       currentDate.getMonth(),
       currentDate.getDate() + 31
     )
-    const projects = await models.Project.findAll({
+    return await models.Project.findAll({
       order: [['duration', 'DESC']],
       where: {
         duration: { [Op.gt]: currentDate, [Op.lte]: oneMonthFromNow },
       },
+      limit: 8,
     })
-    const firstThreeProjects = projects.slice(0, 8)
-    const lastThreeProjects = projects.slice(-8)
-    return [...firstThreeProjects, ...lastThreeProjects]
   } catch (error) {
     console.log(
       'Error at bring latest projects at controller eightLatestProject' +
         error.message
     )
+    throw new Error(error)
   }
 }
 
