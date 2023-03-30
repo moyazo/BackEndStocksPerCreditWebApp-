@@ -7,8 +7,22 @@ const {
   getUserById,
   updateUser,
   investOnProject,
-  toggleTaskToFavoriteProjects
+  toggleTaskToFavoriteProjects,
+  getFavoritesProjects
 } = require('../controllers/users')
+router.get(
+  '/favorites',
+  async (request, response) => {
+      try {
+          const userID = request.user.id;
+          const favorites = await getFavoritesProjects(userID)
+          response.status(200).json(favorites)
+      } catch (error) {
+        console.log(error)
+        response.status(500).json(error.message)
+      }
+  }
+);
 /**
  * *ALL DATA FROM ONE USER IN ORDER TO SHOW AT PROFILE VIEW ON FRONT-END*
  * *localhost:8000/users/profile*
@@ -64,8 +78,9 @@ router.get('/:id', async (req, res) => {
 router.post('/invest', async (req, res) => {
   try {
     // TODO debemos usar el user de la request del middleware
-
+    
     const { projectId, amount } = req.body
+    amount.total = parseInt(amount.total)
     const userId = req.user.id;
     if (!userId || !projectId || !amount) {
       res.status(403).json('userId projectId amount not given at request.body')
@@ -105,6 +120,7 @@ router.post(
       }
   }
 );
+
 
 router.put('/:id', async (req, res) => {
   try {

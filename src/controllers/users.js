@@ -172,11 +172,26 @@ const toggleTaskToFavoriteProjects = async (userId, projectId) => {
   }
 };
 
+const getFavoritesProjects = async (id) => {
+  if(!id){
+    throw new Error('id is required');
+  }
+
+  return await User.findAll({
+    where: {id},
+    include: {
+      model: db.Project,
+      as: 'favoriteProjects',
+    }
+  });;
+}
+
 module.exports = {
   getUsers,
   getUserByEmail,
   getUserById,
   updateUser,
   investOnProject,
-  toggleTaskToFavoriteProjects
+  toggleTaskToFavoriteProjects,
+  getFavoritesProjects
 }
