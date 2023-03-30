@@ -10,16 +10,22 @@ const {
  * *localhost:8000/dashboard/entrepreneur*
  * @param {Request} req
  * @param {Response} res
+ * @return {JSON} 
  */
 router.get('/entrepreneur', async (req, res) => {
   try {
-    let filters = req.body
     const projects = await getProjectsGeneral(req.user.id);
     res.status(200).json(projects)
   } catch (error) {
     res.status(500).json(error.message);
   }
 });
+/**
+ * *ALL DATA FROM PROJECTS FOR ENTREPRENEUR WITH FILTERS*
+ * *localhost:8000/dashboard/entrepreneur*
+ * @param {Request} req
+ * @param {Response} res
+ */
 router.get('/investor', async (req, res) => {
   try {
     let filters = req.query

@@ -6,7 +6,13 @@ const {
   ratioSuccessProject,
 } = require('../controllers/landing')
 const { getProjectsGeneral } = require('../controllers/projects')
-
+/**
+ * *ALL DATA IN ORDER TO SHOW IT AT LANDING PAGE ON FRONT-END*
+ * *localhost:8000/landing*
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {JSON} 
+ */
 router.get('/', async (req, res) => {
   try {
     const totalProjects = await getProjectsGeneral()

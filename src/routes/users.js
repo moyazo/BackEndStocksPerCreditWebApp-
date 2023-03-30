@@ -6,18 +6,23 @@ const {
   getUserByEmail,
   getUserById,
   updateUser,
-  deleteUser,
   investOnProject,
 } = require('../controllers/users')
-
+/**
+ * *ALL DATA FROM ONE USER IN ORDER TO SHOW AT PROFILE VIEW ON FRONT-END*
+ * *localhost:8000/users/profile*
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {JSON}
+ */
 router.get('/profile', async (req, res) => {
   try {
     if (!req.user.email) {
-      res.status(502).json('No email in req.params')
+      res.status(502).json('NOT EMAIL PROVIDED')
     }
     const data = await getUserByEmail(req.user.email)
     if (!data) {
-      res.status(502).json('No data in getUserByEmail')
+      res.status(502).json('NOT DATA FOR PROFILE')
     }
     await data.reload()
     res.status(200).json(data)

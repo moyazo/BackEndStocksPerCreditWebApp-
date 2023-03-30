@@ -31,8 +31,6 @@ const startApp = async () => {
   app.use('/projects', projectRoutes)
   app.use('/tags', tagRoutes)
   app.use('/tagGroups', tagGroupsRoutes)
-  // app.use('/entrepreneur', Students)
-
   try {
     app.listen(port, () => {
       console.log('APP running on port ' + port)
