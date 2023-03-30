@@ -7,7 +7,13 @@ const models = require('../models')
  */
 const getTagGroupsList = async () => {
   try {
-    return await models.Tag_Group.findAll()
+    return await models.Tag_Group.findAll({
+      include: {
+          model: models.Tag,
+          as: 'GroupTag'
+        }
+    });
+    
   } catch (error) {
     console.log(
       'Error at get tag groups at controller getTagGroupsList: ' + error.message

@@ -20,6 +20,16 @@ router.get('/entrepreneur', async (req, res) => {
     res.status(500).json(error.message);
   }
 });
+router.get('/investor', async (req, res) => {
+  try {
+    let filters = req.query
+    filters = {...filters, userId: req.user.id}
+    const projects = await getProjectsList(filters);
+    res.status(200).json(projects)
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
 
 module.exports = router
 
