@@ -4,6 +4,10 @@ const latestProject = async () => {
   try {
     const projects = await models.Project.findAll({
       order: [['duration', 'ASC']],
+      include: {
+        model: models.Tag,
+        as: 'ProjectTag'
+      },
       where: {
         duration: { [Op.gt]: new Date() },
       },
@@ -23,6 +27,10 @@ const topProject = async () => {
   try {
     const projects = await models.Project.findAll({
       order: [['totalInvest', 'DESC']],
+      include: {
+        model: models.Tag,
+        as: 'ProjectTag'
+      }
     })
     if (!projects) {
       throw new Error('projects not found')

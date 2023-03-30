@@ -117,7 +117,12 @@ const getProjectsList = async (filters) => {
   }
 }
 const getProjectsGeneral = async () => {
-  return await models.Project.findAll();
+  return await models.Project.findAll({
+    include: {
+      model: models.Tag,
+      as: 'ProjectTag'
+    }
+  });
 }
 
 /**
