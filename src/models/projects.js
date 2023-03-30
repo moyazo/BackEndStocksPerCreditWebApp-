@@ -50,8 +50,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       description: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.TEXT,
+        allowNull: false,
       },
       url: {
         type: DataTypes.STRING,
@@ -66,15 +66,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       totalInvest: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       totalInvestor: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       country: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       city: {
         type: DataTypes.STRING,
@@ -100,7 +100,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      minInvest: {
+      minimuminvestment: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -108,7 +108,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      returnInvestment: {
+      ReturnOnInvestment: {
         type: DataTypes.DATEONLY,
         allowNull: false,
       },
@@ -123,7 +123,7 @@ module.exports = (sequelize, DataTypes) => {
       updatedAt: {
         allowNull: false,
         type: DataTypes.DATE,
-      },
+      }
     },
     {
       sequelize,
