@@ -24,12 +24,11 @@ router.get('/', async (request, response) => {
 })
 router.get('/dashboard-investor', async (request, response) => {
   try {
+    console.log('hola')
     let allData = {}
     const eightTop = await eightTopProject();
     const eightLatest = await eightLatestProject();
-    console.log('hi')
     const allProjects = await getProjectsGeneral();
-    console.log('hi')
     if (!allProjects && !eightLatest && !eightTop) {
       allData = {
         topProjects: 'No hay datos suficientes',
