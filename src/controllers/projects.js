@@ -116,6 +116,9 @@ const getProjectsList = async (filters) => {
     throw new Error(error)
   }
 }
+const getProjectsGeneral = async () => {
+  return await models.Project.findAll();
+}
 
 /**
  *
@@ -127,7 +130,13 @@ const getProjectsById = async (id) => {
     if (!id) {
       throw new Error('id not given in controller getTagGroupsById')
     }
-    const project = await models.Project.findOne({ where: { id } })
+    const project = await models.Project.findOne({ 
+      where: { id },
+      include: {
+        model: models.Tag,
+        as: 'ProjectTag'
+      }
+    })
     if (!project) {
       throw new Error('Error at find project at controller getProjectsById')
     }
@@ -192,4 +201,5 @@ module.exports = {
   getProjectsById,
   createProject,
   removeProject,
+  getProjectsGeneral
 }

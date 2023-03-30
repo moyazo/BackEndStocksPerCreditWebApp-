@@ -4,6 +4,7 @@ const {
   getProjectsById,
   createProject,
   removeProject,
+  getProjectsGeneral
 } = require('../controllers/projects')
 const {
   eightTopProject,
@@ -24,9 +25,11 @@ router.get('/', async (request, response) => {
 router.get('/dashboard-investor', async (request, response) => {
   try {
     let allData = {}
-    const eightTop = await eightTopProject()
-    const eightLatest = await eightLatestProject()
-    const allProjects = await getProjectsList({ goal: 0, returnInvestment: '' })
+    const eightTop = await eightTopProject();
+    const eightLatest = await eightLatestProject();
+    console.log('hi')
+    const allProjects = await getProjectsGeneral();
+    console.log('hi')
     if (!allProjects && !eightLatest && !eightTop) {
       allData = {
         topProjects: 'No hay datos suficientes',
