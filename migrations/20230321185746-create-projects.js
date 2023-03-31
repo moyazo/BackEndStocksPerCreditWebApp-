@@ -64,11 +64,11 @@ module.exports = {
         allowNull: false,
       },
       commerce: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       proposal: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       currency: {

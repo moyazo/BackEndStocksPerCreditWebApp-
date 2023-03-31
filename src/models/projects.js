@@ -85,11 +85,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       commerce: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       proposal: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       currency: {

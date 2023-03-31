@@ -11,10 +11,9 @@ const {
   eightLatestProject,
 } = require('../controllers/landing')
 
-// TODO NONO MOLINA. ESTAS RUTAS SOLO PARA ENTREPRENEUR
-
 router.get('/', async (request, response) => {
   try {
+    console.log(request.user.id)
     const { goal, returnInvestment } = request.body
     const project = await getProjectsList({ goal, returnInvestment })
     response.status(200).json(project)

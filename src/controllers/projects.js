@@ -65,14 +65,22 @@ const getProjectsList = async (filters) => {
             as: 'GroupTag',
           },
         })
+
         for (const groupTag of groupTags) {
           const ids = groupTag.GroupTag.map((item) => item.id)
           tagsIds = tagsIds.concat(ids)
         }
+
         const tagsProjects = await models.Project_Tag.findAll({
-          where: { tagId: tagsIds },
+          where: { 
+            tagId: tagsIds
+            
+           },
         })
+
         const projectsIds = tagsProjects.map((tp) => tp.projectId)
+
+        console.log({ projectsIds })
 
         if (projectsIds?.length > 0) {
           whereClause.id = projectsIds
@@ -86,13 +94,6 @@ const getProjectsList = async (filters) => {
             [Op.and]: whereClause,
           }
         : null,
-      /*include: {
-        model: models.Tag,
-        as: 'ProjectTag',
-        where: {
-          id: { [Op.in]: allTagsIds },
-        },
-      },*/
     })
   } catch (error) {
     console.log(
